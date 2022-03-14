@@ -40,7 +40,7 @@ if [ -r "$jemalloc_lib" ]; then
 fi
 ```
 
-## 检查是否使用jemalloc
+## 启动mysql后，检查是否使用jemalloc
 
 ```shell
 lsof -Pn -p $(pidof mysqld) | grep jemalloc
