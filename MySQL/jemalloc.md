@@ -1,4 +1,4 @@
-# jemalloc for mysql5.7
+# jemalloc for MySQL 5.7
 
 ## 编译安装 jemalloc
 
