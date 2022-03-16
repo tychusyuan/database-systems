@@ -30,7 +30,7 @@ make install
 wget https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
 tar jxf jemalloc-5.2.1.tar.bz2
 cd jemalloc-5.2.1/
-./configure --prefix=/home/tudou/app/jemalloc-5.2.1
+./configure --prefix=/home/tudou/app/percona-server-5.7.36-39
 make -j 20
 make install
 ```
@@ -38,8 +38,8 @@ make install
 ## 将jemalloc 配置到 mysqld_safe 中
 ```shell
 vim /home/tudou/app/percona-server-5.7.36-39/bin/mysqld_safe
-# 在文件头部添加
-jemalloc_lib="/home/tudou/app/jemalloc-5.2.1/lib/libjemalloc.so"
+# 在文件头部添加 ，这个目录只能是四个目录中的一个 "${MY_BASEDIR_VERSION}/lib/mysql" "/usr/lib64" "/usr/lib/x86_64-linux-gnu" "/usr/lib"
+jemalloc_lib="/home/tudou/app/percona-server-5.7.36-39/lib/libjemalloc.so"
 
 #
 # Add jemalloc to ld_preload if no other malloc forced - needed for TokuDB
