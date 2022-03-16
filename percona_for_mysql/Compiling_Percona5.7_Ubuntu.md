@@ -24,3 +24,13 @@ cmake . -DCMAKE_INSTALL_PREFIX=/home/tudou/app/percona-server-5.7.36-39 -DCMAKE_
 make -j 20
 make install
 ```
+
+## 编译 jemalloc
+```shell
+wget https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
+tar jxf jemalloc-5.2.1.tar.bz2
+cd jemalloc-5.2.1/
+./configure --prefix=/home/tudou/app/jemalloc-5.2.1
+make -j 20
+make install
+```
