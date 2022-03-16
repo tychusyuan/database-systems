@@ -34,3 +34,27 @@ cd jemalloc-5.2.1/
 make -j 20
 make install
 ```
+
+## 将jemalloc 配置到 mysqld_safe 中
+```shell
+vim /home/tudou/app/percona-server-5.7.36-39/bin/mysqld_safe
+# 在文件头部添加
+jemalloc_lib="/home/tudou/app/jemalloc-5.2.1/lib/libjemalloc.so"
+
+#
+# Add jemalloc to ld_preload if no other malloc forced - needed for TokuDB
+#
+if test $load_jemalloc -eq 1
+then
+  for libjemall in "${MY_BASEDIR_VERSION}/lib/mysql" "/usr/lib64" "/usr/lib/x86_64-linux-gnu" "/usr/lib"; do
+    if [ -r "$libjemall/libjemalloc.so.1" ]; then
+      add_mysqld_ld_preload "$libjemall/libjemalloc.so.1"
+      break
+    fi
+  done
+fi
+# 以下三行就是让mysqld启动时调用上面编译的jemalloc
+if [ -r "$jemalloc_lib" ]; then
+  add_mysqld_ld_preload "$jemalloc_lib"
+fi
+```
