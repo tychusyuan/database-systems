@@ -20,7 +20,7 @@ tar zxf percona-server-5.7.36-39.tar.gz
 cd percona-server-5.7.36-39/
 wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.bz2
 tar jxf boost_1_59_0.tar.bz2
-cmake . -DCMAKE_INSTALL_PREFIX=/home/tudou/app/percona-server-5.7.36-39 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF -DDOWNLOAD_BOOST=1 -DWITH_BOOST=boost_1_59_0 -DWITHOUT_ROCKSDB_STORAGE_ENGINE=1 -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 -DWITH_SSL=/home/tudou/app/openssl-1.1.1n -DWITH_ZLIB=bundled
+cmake . -DCMAKE_INSTALL_PREFIX=/home/tudou/app/percona-server-5.7.36-39 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DDOWNLOAD_BOOST=1 -DWITH_BOOST=boost_1_59_0 -DWITHOUT_ROCKSDB_STORAGE_ENGINE=1 -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 -DWITH_SSL=/home/tudou/app/openssl-1.1.1n -DWITH_ZLIB=bundled
 make -j 20
 make install
 ```
