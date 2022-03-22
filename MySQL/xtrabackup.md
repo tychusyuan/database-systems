@@ -1,4 +1,4 @@
-# xtrabackup
+# Xtrabackup
 
 ## backup 通过 管道 发送给目标服务器
 ```shell
