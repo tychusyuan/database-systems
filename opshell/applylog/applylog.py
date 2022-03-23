@@ -89,7 +89,6 @@ def Run():
                     takeUp(space,logpath)
 
             plog("next loop")
-            idx -= 1
             sleep(60)
 
 if __name__ == "__main__":
