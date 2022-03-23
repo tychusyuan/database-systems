@@ -2,6 +2,13 @@ import os
 from datetime import datetime
 from time import sleep
 
+'''
+mkdir /home/work/applylog/log -p
+mkdir /home/applylog/log -p
+chown work.work /home/work/applylog -R
+chown work.work /home/applylog -R
+'''
+
 DFLIST = [
 {'df':"/home/work",'log':"/home/work/applylog/log"},
 {'df':"/home",'log':"/home/applylog/log"},
@@ -12,6 +19,7 @@ LEV = 0.5
 
 def plog(s):
     if P:
+        # print "%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),s)
         print("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),s))
 
 def availRatio(vfs):
