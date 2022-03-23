@@ -3,15 +3,15 @@ from datetime import datetime
 from time import sleep
 
 '''
-mkdir /home/work/applylog/log -p
-mkdir /home/applylog/log -p
+mkdir /home/work/applylog -p
+mkdir /home/applylog -p
 chown work.work /home/work/applylog -R
 chown work.work /home/applylog -R
 '''
 
 DFLIST = [
-{'df':"/home/work",'log':"/home/work/applylog/log"},
-{'df':"/home",'log':"/home/applylog/log"},
+{'df':"/home/work",'log':"/home/work/applylog"},
+{'df':"/home",'log':"/home/applylog"},
 ]
 BLOCKSIZE = 1024 * 1024 * 1024
 P = True
