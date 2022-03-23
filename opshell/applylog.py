@@ -63,15 +63,15 @@ def takeDown(space,logpath):
                     break
 
 def Run():
-    for item in DFLIST:
-        if not os.path.exists(item['log']):
-            os.mkdir(item['log'])
-
     while True:
         for idx in range(0,60):
             for item in DFLIST:
                 df = item['df']
                 logpath = item['log']
+
+                if not os.path.exists(logpath):
+                    os.mkdir(logpath)
+
                 info = os.statvfs(df)
                 plog(info)
                 space = availSpace(info)
