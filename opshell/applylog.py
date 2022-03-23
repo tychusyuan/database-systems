@@ -2,24 +2,28 @@ import os
 from datetime import datetime
 from time import sleep
 
-DF = "/home/work"
-LOGPATH = "/home/work/applylog/log"
+DFLIST = [
+{'df':"/home/work",'log':"/home/work/applylog/log"},
+{'df':"/home",'log':"/home/applylog/log"},
+]
 BLOCKSIZE = 1024 * 1024 * 1024
 P = True
+LEV = 0.5
 
 def plog(s):
     if P:
-        print(s)
+        print("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),s))
 
 def availRatio(vfs):
     return  vfs.f_bavail/vfs.f_blocks
 
 def availSpace(vfs):
-    return int( (vfs.f_bavail - (vfs.f_blocks / 2) ) * vfs.f_bsize / BLOCKSIZE )
+    return int( (vfs.f_bavail - (vfs.f_blocks * LEV) ) * vfs.f_bsize / BLOCKSIZE )
 
 def appendFile(fielpath):
     with open(fielpath,"w") as f:
         fs=0
+        plog( "%s %s" % ("append",fielpath))
         while True:
             lst=[]
             for idx in range(0,1000):
@@ -35,38 +39,48 @@ def appendFile(fielpath):
             else:
                 break
 
-def takeUp(space):
+def takeUp(space,logpath):
     if space > 0:
         for idx in range(0,space):
             now = datetime.now()
-            appendFile("%s/%s.log" % (LOGPATH,now.strftime('%Y%m%d%H%M%S')))
+            appendFile("%s/%s.log" % (logpath,now.strftime('%Y%m%d%H%M%S')))
             sleep(1)
 
-def takeDown(space):
-    if space > 0 :
-        idx = 0
-        lst = os.listdir(LOGPATH)
-        for f in lst:
-            os.remove("%s/%s" % (LOGPATH,f))
-            idx += 1
-            if idx < space:
-                sleep(1)
-                continue
-            else:
-                break
+def takeDown(space,logpath):
+    if space < 0 :
+        idx = abs(space)
+        lst = os.listdir(logpath)
+        if len(lst) > 0:
+            for f in lst:
+                file_name = "%s/%s" % (logpath,f)
+                os.remove(file_name)
+                plog("%s %s" % ("remove",file_name))
+                idx -= 1
+                if idx > 0:
+                    sleep(1)
+                    continue
+                else:
+                    break
 
 def Run():
+    for item in DFLIST:
+        if not os.path.exists(item['log']):
+            os.mkdir(item['log'])
+
     while True:
         for idx in range(0,60):
-            info = os.statvfs(DF)
-            plog(info)
-            space = availSpace(info)
-            plog(space)
-            if availRatio(info) > 0.5 :
-                takeDown(abs(space))
-            if idx == 0 :
-                takeUp(space)
+            for item in DFLIST:
+                df = item['df']
+                logpath = item['log']
+                info = os.statvfs(df)
+                plog(info)
+                space = availSpace(info)
+                plog(space)
+                takeDown(space,logpath)
+                if idx == 0 :
+                    takeUp(space,logpath)
 
+            plog("next loop")
             idx -= 1
             sleep(60)
 
