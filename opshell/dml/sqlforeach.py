@@ -18,7 +18,7 @@ with connection:
 
     with connection.cursor() as cursor:
         for item in lst:
-            sql = "delete from  `users` where id = %s)"
+            sql = "delete from  `users` where id = %s"
             cursor.execute(sql, (item))
             connection.commit()
 
