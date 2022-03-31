@@ -7,6 +7,7 @@ connection = pymysql.connect(host='localhost',
                              database='db',
                              cursorclass=pymysql.cursors.DictCursor)
 
+# 防止事务过大，或者影响主从延迟
 # SELECT CONCAT('delete from `user` where `id`=', `id`, ';') from `user` where `email` like '%s%' ;
 with connection:
     lst=[]
