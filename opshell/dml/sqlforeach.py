@@ -11,7 +11,7 @@ connection = pymysql.connect(host='localhost',
 with connection:
     lst=[]
     with connection.cursor() as cursor:
-        sql = "select `id` FROM `users` WHERE `email`=%s"
+        sql = "select `id` FROM `users` WHERE `email` like %s"
         cursor.execute(sql, ('webmaster@python.org',))
         result = cursor.fetchone()
         lst.append(result["id"])
