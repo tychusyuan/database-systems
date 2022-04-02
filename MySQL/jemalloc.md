@@ -16,28 +16,7 @@ make && make install
 ```shell
 vim /home/work/mysql/bin/mysqld_safe
 # 在文件头部添加
-jemalloc_lib="/home/work/mysql/lib/libjemalloc.so"
-```
-
-## 在文件中找到 Add jemalloc to ld_preload 部分，因为默认只在4个目录中查找，所以自己append 一段
-
-```shell
-#
-# Add jemalloc to ld_preload if no other malloc forced - needed for TokuDB
-#
-if test $load_jemalloc -eq 1
-then
-  for libjemall in "${MY_BASEDIR_VERSION}/lib/mysql" "/usr/lib64" "/usr/lib/x86_64-linux-gnu" "/usr/lib"; do
-    if [ -r "$libjemall/libjemalloc.so.1" ]; then
-      add_mysqld_ld_preload "$libjemall/libjemalloc.so.1"
-      break
-    fi
-  done
-fi
-# 以下三行就是让mysqld启动时调用上面编译的jemalloc
-if [ -r "$jemalloc_lib" ]; then
-  add_mysqld_ld_preload "$jemalloc_lib"
-fi
+export LD_PRELOAD="/home/work/app/mysql/lib/libjemalloc.so"
 ```
 
 ## 启动mysql后，检查是否使用jemalloc
