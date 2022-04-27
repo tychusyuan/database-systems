@@ -1,14 +1,18 @@
 # Xtrabackup
 
 ## backup 通过 管道 发送给目标服务器
-```shell
-# 发送端服务器执行
-innobackupex --defaults-file={BACKUP_MY.CNF} --ibbackup=xtrabackup --lock-wait-threshold=40 --lock-wait-query-type=all --lock-wait-timeout=180 --kill-long-queries-timeout=20 --kill-long-query-type=all --parallel=8 --host={LOCALHOST} --port={PORT} --user={ADMIN} --password={PASSWORD} {BACKUP_DIR} --no-timestamp --stream=xbstream | nc {HOST} {PORT}
-# 接收端服务器执行
-nc -l {PORT} | xbstream -x
-# 接收完毕后，执行apply-log
-innobackupex --ibbackup=xtrabackup --parallel=8 --apply-log --use-memory=4G --defaults---defaults-file=./backup-my.cnf  ./
 
+### 发送端服务器执行
+```shell
+innobackupex --defaults-file={BACKUP_MY.CNF} --ibbackup=xtrabackup --lock-wait-threshold=40 --lock-wait-query-type=all --lock-wait-timeout=180 --kill-long-queries-timeout=20 --kill-long-query-type=all --parallel=8 --host={LOCALHOST} --port={PORT} --user={ADMIN} --password={PASSWORD} {BACKUP_DIR} --no-timestamp --stream=xbstream | nc {HOST} {PORT}
+```
+### 接收端服务器执行
+```shell
+nc -l {PORT} | xbstream -x
+```
+### 接收完毕后，执行apply-log
+```shell
+innobackupex --ibbackup=xtrabackup --parallel=8 --apply-log --use-memory=4G --defaults---defaults-file=./backup-my.cnf  ./
 ```
 
 ## 使用本地 unix socket，传输之前使用过lz4 压缩
