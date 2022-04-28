@@ -4,8 +4,8 @@ from time import sleep
 
 '''
 mkdir /home/work/applylog -p
-mkdir /home/applylog -p
 chown work.work /home/work/applylog -R
+mkdir /home/applylog -p
 chown work.work /home/applylog -R
 '''
 
