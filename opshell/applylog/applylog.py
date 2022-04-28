@@ -43,6 +43,7 @@ def appendFile(fielpath):
 
             fs = os.path.getsize(fielpath)
             if fs < BLOCKSIZE :
+                sleep(0.1)
                 continue
             else:
                 break
