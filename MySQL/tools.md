@@ -22,3 +22,7 @@ concat( round( DATA_FREE / ( 1024 *1024*1024 ) , 2 ) , 'G' ) DATA_FREE
 FROM information_schema.TABLES WHERE TABLE_SCHEMA='db_name'
 ORDER BY information_schema.TABLES.DATA_LENGTH DESC LIMIT 20;
 ```
+### tables last_update
+```sql
+SELECT * FROM mysql.innodb_table_stats order by last_update desc limit 50;
+```
