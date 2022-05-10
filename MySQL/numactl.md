@@ -2,7 +2,21 @@
 ## EXAMPLES
 ### bigdatabase arguments Run big database with its memory interleaved on all CPUs.
 ```shell
-numactl --interleave=all 
+numactl --interleave=all /home/work/app/mysql/bin/mysqld_safe --defaults-file=/home/work/etc/my3306.cnf --basedir=/home/work/app/mysql --user=work &
+```
+### database run with its memory on local node 
+```shell
+numactl --cpunodebind=0 --localalloc /home/work/app/mysql/bin/mysqld_safe --defaults-file=/home/work/etc/my3306.cnf --basedir=/home/work/app/mysql --user=work &
+```
+```shell
+numactl --cpunodebind=1 --localalloc /home/work/app/mysql/bin/mysqld_safe --defaults-file=/home/work/etc/my3307.cnf --basedir=/home/work/app/mysql --user=work &
+```
+### cross mode
+```shell
+numactl --physcpubind=0,1,2,3 --interleave=all /home/work/app/mysql/bin/mysqld_safe --defaults-file=/home/work/etc/my3306.cnf --basedir=/home/work/app/mysql --user=work &
+```
+```shell
+numactl --physcpubind=2,3,4,5 --interleave=all /home/work/app/mysql/bin/mysqld_safe --defaults-file=/home/work/etc/my3307.cnf --basedir=/home/work/app/mysql --user=work &
 ```
 ### process Run process on node 0 with memory allocated on node 0 and 1.
 ```shell
