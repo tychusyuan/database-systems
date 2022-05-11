@@ -9,8 +9,8 @@ sudo apt install gcc g++ libaio-dev libncurses5-dev libreadline-dev libcurl4-ope
 wget https://www.openssl.org/source/openssl-1.1.1n.tar.gz
 tar zxf openssl-1.1.1n.tar.gz
 cd openssl-1.1.1n/
-./config --prefix=/home/tudou/app/openssl-1.1.1n
-make && make install
+./config --prefix=/home/work/app/openssl-1.1.1n
+make && make install_sw
 ```
 
 ## 编译安装
@@ -20,7 +20,7 @@ tar zxf percona-server-5.7.36-39.tar.gz
 cd percona-server-5.7.36-39/
 wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.bz2
 tar jxf boost_1_59_0.tar.bz2
-cmake . -DCMAKE_INSTALL_PREFIX=/home/tudou/app/percona-server-5.7.36-39 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DDOWNLOAD_BOOST=1 -DWITH_BOOST=boost_1_59_0 -DWITHOUT_ROCKSDB_STORAGE_ENGINE=1 -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 -DWITH_SSL=/home/tudou/app/openssl-1.1.1n -DWITH_ZLIB=bundled
+cmake . -DCMAKE_INSTALL_PREFIX=/home/work/app/percona-server-5.7.36-39 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DDOWNLOAD_BOOST=1 -DWITH_BOOST=boost_1_59_0 -DWITHOUT_ROCKSDB_STORAGE_ENGINE=1 -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 -DWITH_SSL=/home/work/app/openssl-1.1.1n -DWITH_ZLIB=bundled
 make -j 20
 make install
 ```
@@ -30,14 +30,14 @@ make install
 wget https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
 tar jxf jemalloc-5.2.1.tar.bz2
 cd jemalloc-5.2.1/
-./configure --prefix=/home/tudou/app/percona-server-5.7.36-39
+./configure --prefix=/home/work/app/percona-server-5.7.36-39
 make -j 20
 make install
 ```
 
 ## 将jemalloc 配置到 mysqld_safe 中
 ```shell
-vim /home/tudou/app/percona-server-5.7.36-39/bin/mysqld_safe
+vim /home/work/app/percona-server-5.7.36-39/bin/mysqld_safe
 # 在文件头部添加 ，这个目录只能是四个目录中的一个 "${MY_BASEDIR_VERSION}/lib/mysql" "/usr/lib64" "/usr/lib/x86_64-linux-gnu" "/usr/lib"
 export LD_PRELOAD="/home/work/app/mysql/lib/libjemalloc.so"
 ```
@@ -61,7 +61,7 @@ default-character-set               	= utf8mb4
 [mysqld]
 lower_case_table_names          	= 1
 character-set-server            	= utf8mb4
-tmpdir                          	= /home/tudou/tmp
+tmpdir                          	= /home/work/tmp
 port                            	= 3306
 socket                          	= /dev/shm/mysql3306.sock
 pid_file                        	= /dev/shm/mysql3306.pid
@@ -108,7 +108,7 @@ read_rnd_buffer_size            	= 8M
 net_buffer_length               	= 1M
 thread_stack                    	= 1M
 
-datadir                         	= /home/tudou/data/mysql/data3306
+datadir                         	= /home/work/data/mysql/data3306
 memlock
 default-storage-engine          	= innodb
 innodb_doublewrite      		= 1
@@ -121,7 +121,7 @@ innodb_change_buffering         	= all
 innodb_data_file_path           	= ibdata1:1G:autoextend
 innodb_concurrency_tickets      	= 1024
 
-innodb_log_group_home_dir       	= /home/tudou/log/mysql/log3306
+innodb_log_group_home_dir       	= /home/work/log/mysql/log3306
 innodb_max_dirty_pages_pct      	= 75
 innodb_flush_method             	= O_DIRECT
 innodb_log_file_size            	= 1G
@@ -154,15 +154,15 @@ innodb_sync_spin_loops          	= 0
 innodb_flush_log_at_trx_commit  	= 2
 
 general-log                     	= 0
-general_log_file                	= /home/tudou/log/mysql/log3306/general.log
+general_log_file                	= /home/work/log/mysql/log3306/general.log
 
 slow-query-log                  	= 0
-slow_query_log_file             	= /home/tudou/log/mysql/log3306/slow_query.log
+slow_query_log_file             	= /home/work/log/mysql/log3306/slow_query.log
 long_query_time                 	= 0.001
 log-queries-not-using-indexes   	= 1
 
 log_warnings
-log_error                       	= /home/tudou/log/mysql/log3306/log_error.err
+log_error                       	= /home/work/log/mysql/log3306/log_error.err
 
 
 [mysqldump]
@@ -183,10 +183,10 @@ interactive-timeout
 ```
 ## 初始化数据库文件
 ```shell
-/home/tudou/app/mysql/bin/mysqld --defaults-file=/home/tudou/app/mysql/etc/my.cnf --initialize-insecure --user=tudou
+/home/work/app/mysql/bin/mysqld --defaults-file=/home/work/app/mysql/etc/my.cnf --initialize-insecure --user=work
 ```
 
 ## 启动
 ```shell
-numactl --interleave=all /home/tudou/app/mysql/bin/mysqld_safe --defaults-file=/home/tudou/app/mysql/etc/my.cnf --user=tudou &
+numactl --interleave=all /home/work/app/mysql/bin/mysqld_safe --defaults-file=/home/work/app/mysql/etc/my.cnf --user=work &
 ```
