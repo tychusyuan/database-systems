@@ -1,7 +1,7 @@
 # Compiling Percona5.7 On Ubuntu
 
 ```shell
-sudo apt install gcc g++ libaio-dev libncurses5-dev libreadline-dev libcurl4-openssl-dev
+sudo apt install make cmake pkg-config bison gcc g++ libaio-dev libncurses5-dev libreadline-dev libcurl4-openssl-dev
 ```
 
 ## openssl
