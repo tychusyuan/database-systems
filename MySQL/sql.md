@@ -1,4 +1,4 @@
-# Structured Query Language
+# SQL - Structured Query Language @ MySQL
 ## DML
 ### SELECT
 ```sql
