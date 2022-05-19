@@ -1,4 +1,3 @@
-```python
 import gc
 from time import sleep
 from datetime import datetime
@@ -36,4 +35,3 @@ if __name__ == "__main__":
                 memoryUp(lst)
 
             sleep(3)
-```
