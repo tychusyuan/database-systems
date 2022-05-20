@@ -1,8 +1,12 @@
 # tmux
 
-### 新建会话
+## 新建会话
 ```shell
-$ tmux new -s <session-name>
+tmux
+```
+### 命名会话
+```shell
+tmux new -s <session-name>
 ```
 ### 分离会话
 ```shell
