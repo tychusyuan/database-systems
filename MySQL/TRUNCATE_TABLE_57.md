@@ -14,6 +14,8 @@ START TRANSACTION;
 CREATE TABLE dev_tab_new LIKE dev_tab; 
 RENAME TABLE dev_tab TO dev_tab_old; 
 RENAME TABLE dev_tab_new TO dev_tab; 
-DROP TABLE dev_tab_old;
 COMMIT;
+
+DROP TABLE dev_tab_old;
+
 ```
