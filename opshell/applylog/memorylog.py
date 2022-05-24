@@ -5,7 +5,8 @@ import gc
 from time import sleep
 from datetime import datetime
 
-LVE = 0.4
+TOPLVE = 0.5
+LOWLVE = 0.4
 BLOCKSIZE = 1024 * 1024
 
 def sysMem():
@@ -23,20 +24,20 @@ def sysMem():
 def plog(s):
     print("%s %s" % (datetime.now().strftime('%Y-%m-%d %H:%M:%S'),s))
 
-def memorySpace():
+def memorySpace(lve):
     total_mem , aval_mem = sysMem()
     plog((total_mem - aval_mem)/float(total_mem))
-    return int((aval_mem  - (total_mem * (1-LVE) )) / BLOCKSIZE)
+    return int((aval_mem  - (total_mem * (1-lve) )) / BLOCKSIZE)
 
 def memoryUp(lst):
-    while memorySpace() > 0:
+    while memorySpace(LOWLVE) > 0:
         lst.append(fillBlock())
     
         plog(len(lst))
 
 def memoryDown(lst):
     while len(lst) > 0:
-        if memorySpace() < 0:
+        if memorySpace(TOPLVE) < 0:
             del(lst[0])
             gc.collect()
         else:
