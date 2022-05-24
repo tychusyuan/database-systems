@@ -1,5 +1,10 @@
 # Tools
 
+## processlist
+```sql
+select * from information_schema.processlist where `COMMAND`<>'Sleep' order by `TIME` asc;
+```
+
 ## database info
 
 ### 排查 数据库中所有表 大小
