@@ -88,6 +88,9 @@ def load(conn,lst):
             print(Innodb_buffer_pool_pages_free,Innodb_buffer_pool_pages_total,(Innodb_buffer_pool_pages_total - Innodb_buffer_pool_pages_free)/Innodb_buffer_pool_pages_total)
             if ((Innodb_buffer_pool_pages_total - Innodb_buffer_pool_pages_free)/Innodb_buffer_pool_pages_total) < lve :
                 index_lst = indexLst(conn,table)
+                if len(index_lst) == 0:
+                    index_lst = ['_rowid']
+
                 loadTable(conn,table,index_lst)
 
 
