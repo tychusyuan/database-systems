@@ -1,6 +1,7 @@
 # innodb_buffer_pool_dump & load
 
-## dump
+## dump 
+使用物理备份并恢复的从库表空间id 和主库一致，可以使用主库 dump 文件预热
 
 ### 开始dump
 ```sql
