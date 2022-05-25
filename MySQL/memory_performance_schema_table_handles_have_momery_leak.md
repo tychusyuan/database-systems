@@ -38,12 +38,13 @@ Hi,
 Thank you for your bug report. However, I do not believe that this is a bug.
 
 The problem lies in the following settings:
+```sql
 performance_schema_max_table_instances = 40000
 performance_schema_digests_size = 40000
 table_open_cache =10000
 innodb_open_files=10000
 open_files_limit=10000
-
+```
 Hence, what you should do, is to reduce the above settings to 10 % of their current settings. After that you should run MySQL server for several hours or one day and collect the same memory data again. I am sure that you will see much less memory usage then 9 Gb. Each of the performance_schema objects takes some memory for itself, frequently not negligible, so when you multiply the above numbers you get a very large memory usage.
 
 Also, you have evidently set InnoDB buffer pool size to be close to the total RAM available on your computer. There are many other parts of MySQL that use the memory. Please, do not set buffer pool size to more then 70 % of the memory that you are dedicated to the server. Also, check out other memory settings , like the values that are allocated for each connection.
