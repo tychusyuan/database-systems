@@ -38,7 +38,6 @@ Hi,
 Thank you for your bug report. However, I do not believe that this is a bug.
 
 The problem lies in the following settings:
-
 performance_schema_max_table_instances = 40000
 performance_schema_digests_size = 40000
 table_open_cache =10000
