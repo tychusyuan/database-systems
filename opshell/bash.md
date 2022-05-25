@@ -1,6 +1,6 @@
 # Bash
 
-### ping with date
+### ping with datetime
 ```shell
 ping host | while read pong; do echo "$(date): $pong"; done
 ```
