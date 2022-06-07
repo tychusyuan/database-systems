@@ -1,8 +1,8 @@
 
-##
+## 被关闭的bug，看来并不是个案
 https://bugs.mysql.com/bug.php?id=93361
 
-## 
+## 原来是 默认值问题，导致大量sql打过来，performance_schema 引擎占用大量内存
 ```sql
 select event_name,CURRENT_NUMBER_OF_BYTES_USED/1024/1024 from performance_schema.memory_summary_global_by_event_name order by CURRENT_NUMBER_OF_BYTES_USED desc LIMIT 20;
 ```
