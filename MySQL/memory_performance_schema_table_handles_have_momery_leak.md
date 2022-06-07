@@ -5,6 +5,8 @@ https://bugs.mysql.com/bug.php?id=93361
 ## 
 ```sql
 select event_name,CURRENT_NUMBER_OF_BYTES_USED/1024/1024 from performance_schema.memory_summary_global_by_event_name order by CURRENT_NUMBER_OF_BYTES_USED desc LIMIT 20;
+```
+```sql
 +-----------------------------------------------------------------------------+----------------------------------------+
 | event_name                                                                  | CURRENT_NUMBER_OF_BYTES_USED/1024/1024 |
 +-----------------------------------------------------------------------------+----------------------------------------+
