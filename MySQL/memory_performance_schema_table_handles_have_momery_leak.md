@@ -65,6 +65,6 @@ show global variables like 'performance_schema_max_table_instances';
 ### 最终开启 performance_schema 同时要设置两个参数
 ```shell
 performance_schema                                              = 1
-performance_schema_max_table_instances 				                  = 10000
-performance_schema_digests_size 				                        = 10000
+performance_schema_max_table_instances 				= 10000
+performance_schema_digests_size 				= 10000
 ```
