@@ -2,29 +2,32 @@ package main
 
 import "fmt"
 
-func quickSort(array []int) {
-
+func quickSort(array []int, left, right int) {
+	if left < right {
+		idx := partition(array, left, right)
+		quickSort(array, left, idx-1)
+		quickSort(array, idx+1, right)
+	}
 }
 
-func partition(array []int, l, r int) int {
-	p := r
-	i := l
-	j := p - 1
+// https://blog.boot.dev/golang/quick-sort-golang/
+func partition(array []int, left, right int) int {
+	pivot := right
+	i := left
 
-	for ; i < j; i++ {
-		if array[i] > array[p] {
-			for ; i < j; j++ {
-				if array[j] < array[p] {
-					array[i], array[j] = array[j], array[i]
-				}
-			}
+	for j := left; j < right; j++ {
+		if array[j] < array[pivot] {
+			array[i], array[j] = array[j], array[i]
+			i++
 		}
 	}
+	array[i], array[pivot] = array[pivot], array[i]
+	return i
 }
 
 func main() {
 	data := []int{1, 7, 7, 9, 1, 8, 5, 0}
 	fmt.Println(data)
-	quickSort(data)
+	quickSort(data, 0, len(data)-1)
 	fmt.Println(data)
 }
