@@ -10,7 +10,6 @@ func quickSort(array []int, left, right int) {
 	}
 }
 
-// https://blog.boot.dev/golang/quick-sort-golang/
 func partition(array []int, left, right int) int {
 	pivot := right
 	i := left
