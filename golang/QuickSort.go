@@ -4,7 +4,8 @@ import "fmt"
 
 func quickSort(array []int, left, right int) {
 	if left < right {
-		idx := partition(array, left, right)
+		//idx := partition(array, left, right)
+		idx := partition2(array, left, right)
 		quickSort(array, left, idx-1)
 		quickSort(array, idx+1, right)
 	}
@@ -20,6 +21,25 @@ func partition(array []int, left, right int) int {
 			i++
 		}
 	}
+	array[i], array[pivot] = array[pivot], array[i]
+	return i
+}
+
+func partition2(array []int, left, right int) int {
+	pivot := right
+	i := left
+	j := right - 1
+
+	for i < j {
+		for i < j && array[i] <= array[pivot] {
+			i++
+		}
+		for i < j && array[j] >= array[pivot] {
+			j--
+		}
+		array[i], array[j] = array[j], array[i]
+	}
+
 	array[i], array[pivot] = array[pivot], array[i]
 	return i
 }
