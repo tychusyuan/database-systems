@@ -28,7 +28,7 @@ func partition(array []int, left, right int) int {
 func partition2(array []int, left, right int) int {
 	pivot := right
 	i := left
-	j := right - 1
+	j := right
 
 	for i < j {
 		for i < j && array[i] <= array[pivot] {
