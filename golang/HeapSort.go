@@ -2,33 +2,35 @@ package main
 
 import "fmt"
 
-func heapSort(array []int) {
-	m := len(array)
-	s := m / 2
-	for i := s; i > -1; i-- {
-		heap(array, i, m-1)
+func heapSort(tree []int) {
+	l := len(tree)
+	last_node := l - 1
+	parent := (last_node - 1) / 2
+	for i := parent; i > -1; i-- {
+		heap(tree, i, last_node)
 	}
-	for i := m - 1; i > 0; i-- {
-		array[i], array[0] = array[0], array[i]
-		heap(array, 0, i-1)
+
+	for i := last_node; i > 0; i-- {
+		tree[i], tree[0] = tree[0], tree[i]
+		heap(tree, 0, i-1)
 	}
 }
 
-func heap(array []int, i, end int) {
-	l := 2*i + 1
-	if l > end {
+func heap(tree []int, i, end int) {
+	l_node := 2*i + 1
+	if l_node > end {
 		return
 	}
-	n := l
-	r := 2*i + 2
-	if r <= end && array[r] > array[l] {
-		n = r
+	max := l_node
+	r_node := 2*i + 2
+	if r_node <= end && tree[r_node] > tree[l_node] {
+		max = r_node
 	}
-	if array[i] > array[n] {
+	if tree[i] > tree[max] {
 		return
 	}
-	array[n], array[i] = array[i], array[n]
-	heap(array, n, end)
+	tree[max], tree[i] = tree[i], tree[max]
+	heap(tree, max, end)
 }
 
 func main() {
