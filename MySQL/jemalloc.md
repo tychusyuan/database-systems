@@ -24,10 +24,11 @@ export LD_PRELOAD="/home/work/app/mysql/lib/libjemalloc.so"
 lsof -Pn -p $(pidof mysqld) | grep jemalloc
 
 ```
+### multiple MySQL instances
 ```shell
 for id in $(pidof mysqld); do lsof -Pn -p $id | grep jemalloc;done
 ```
-### multiple MySQL instances
+
 ```shell
 lsof -Pn -p $(pidof mysqld) | grep jemalloc
 mysqld  15815 work  mem       REG             253,33    4395840 41962974 /home/work/mysql/lib/libjemalloc.so.2
