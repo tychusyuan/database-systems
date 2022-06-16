@@ -51,12 +51,15 @@ SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'performan
 ```sql
 SHOW TABLES FROM performance_schema;
 ```
-### not all instruments and consumers are enabled. To turn all of these on and enable event timing, execute two statements
+### not all instruments and consumers are enabled
 ```sql
 select * from performance_schema.setup_instruments;
 ```
 ```sql
 UPDATE performance_schema.setup_instruments SET ENABLED = 'YES', TIMED = 'YES';
+```
+```sql
+UPDATE performance_schema.setup_instruments SET ENABLED = 'NO' WHERE NAME = 'wait/synch/mutex/sql/LOCK_mysql_create_db';
 ```
 ```sql
 select * from performance_schema.setup_consumers;
