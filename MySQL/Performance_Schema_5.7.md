@@ -53,7 +53,13 @@ SHOW TABLES FROM performance_schema;
 ```
 ### not all instruments and consumers are enabled. To turn all of these on and enable event timing, execute two statements
 ```sql
+select * from performance_schema.setup_instruments;
+```
+```sql
 UPDATE performance_schema.setup_instruments SET ENABLED = 'YES', TIMED = 'YES';
+```
+```sql
+select * from performance_schema.setup_consumers;
 ```
 ```sql
 UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
