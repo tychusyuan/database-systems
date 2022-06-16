@@ -68,3 +68,13 @@ performance_schema                                              = 1
 performance_schema_max_table_instances 				= 10000
 performance_schema_digests_size 				= 10000
 ```
+###
+```shell
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
+45305 mysql     20   0   28.4g    25g   8400 S  48.5 81.4  64:46.82 mysqld
+
+gdb --batch --pid `pidof mysqld` --ex 'call malloc_trim(0)'
+
+  PID USER      PR  NI    VIRT    RES    SHR  S  %CPU %MEM     TIME+ COMMAND
+45305 mysql     20   0   28.4g    5.2g   8288 S  2.7  17.0  64:56.82 mysqld
+```
