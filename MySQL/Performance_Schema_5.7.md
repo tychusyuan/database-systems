@@ -148,6 +148,51 @@ performance_schema_events_waits_history_long_size=15000
 ```
 The Performance Schema automatically sizes the values of several of its parameters at server startup if they are not set explicitly. For example, it sizes the parameters that control the sizes of the events waits tables this way. the Performance Schema allocates memory incrementally, scaling its memory use to actual server load, instead of allocating all the memory it needs during server startup. Consequently, many sizing parameters need not be set at all. To see which parameters are autosized or autoscaled, use mysqld --verbose --help and examine the option descriptions, or see Section 25.15, “Performance Schema System Variables”.
 
+|Name	|Cmd-Line	|Option File	|System Var	|Var Scope	|Dynamic|
+|：------------------------------------------------------|------|------|------|----------|------|
+|performance_schema	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_accounts_size	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_digests_size	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_events_stages_history_long_size	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_events_stages_history_size	|Yes	|Yes	|Yes	|Global	No|
+|performance_schema_events_statements_history_long_size	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_events_statements_history_size	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_events_transactions_history_long_size	Yes	|Yes	|Yes	|Global|	No|
+|performance_schema_events_transactions_history_size	|Yes	|Yes	|Yes	Global	No
+|performance_schema_events_waits_history_long_size	Yes	Yes	|Yes	Global	No
+|performance_schema_events_waits_history_size	Yes	Yes	Yes	Global	No
+|performance_schema_hosts_size	Yes	Yes	Yes	Global	No
+|performance_schema_max_cond_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_cond_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_digest_length	Yes	Yes	Yes	Global	No
+performance_schema_max_file_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_file_handles	Yes	Yes	Yes	Global	No
+performance_schema_max_file_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_index_stat	Yes	Yes	Yes	Global	No
+performance_schema_max_memory_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_metadata_locks	Yes	Yes	Yes	Global	No
+performance_schema_max_mutex_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_mutex_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_prepared_statements_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_program_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_rwlock_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_rwlock_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_socket_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_socket_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_sql_text_length	Yes	Yes	Yes	Global	No
+performance_schema_max_stage_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_statement_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_statement_stack	Yes	Yes	Yes	Global	No
+performance_schema_max_table_handles	Yes	Yes	Yes	Global	No
+performance_schema_max_table_instances	Yes	Yes	Yes	Global	No
+performance_schema_max_table_lock_stat	Yes	Yes	Yes	Global	No
+performance_schema_max_thread_classes	Yes	Yes	Yes	Global	No
+performance_schema_max_thread_instances	Yes	Yes	Yes	Global	No
+performance_schema_session_connect_attrs_size	Yes	Yes	Yes	Global	No
+performance_schema_setup_actors_size	Yes	Yes	Yes	Global	No
+performance_schema_setup_objects_size	Yes	Yes	Yes	Global	No
+performance_schema_show_processlist	Yes	Yes	Yes	Global	Yes
+performance_schema_users_size	Yes	Yes	Yes	Global	No
 For each autosized parameter that is not set at server startup, the Performance Schema determines how to set its value based on the value of the following system values, which are considered as “hints” about how you have configured your MySQL server:
 ```
 max_connections
