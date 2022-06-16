@@ -148,8 +148,8 @@ performance_schema_events_waits_history_long_size=15000
 ```
 The Performance Schema automatically sizes the values of several of its parameters at server startup if they are not set explicitly. For example, it sizes the parameters that control the sizes of the events waits tables this way. the Performance Schema allocates memory incrementally, scaling its memory use to actual server load, instead of allocating all the memory it needs during server startup. Consequently, many sizing parameters need not be set at all. To see which parameters are autosized or autoscaled, use mysqld --verbose --help and examine the option descriptions, or see Section 25.15, “Performance Schema System Variables”.
 
-|Name	|Cmd-Line	|Option File	|System Var	|Var Scope	|Dynamic|
-|：------------------------------------------------------|------|------|------|----------|------|
+|Name	                                                        |Cmd-Line	|Option File	|System Var	|Var Scope	|Dynamic|
+|:--------------------------------------------------------------|------|------|------|----------|------|
 |performance_schema	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_accounts_size	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_digests_size	|Yes	|Yes	|Yes	|Global	|No|
