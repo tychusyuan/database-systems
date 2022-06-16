@@ -1,6 +1,6 @@
 # Performance Schema 
 
-## Quick Start
+## 1. Quick Start
 ###  The Performance Schema is enabled by default
 ###  my.cnf 
 ```
@@ -67,7 +67,7 @@ select * from performance_schema.setup_consumers;
 ```sql
 UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
 ```
-## Performance Schema Build Configuration
+## 2. Performance Schema Build Configuration
 ### The Performance Schema is mandatory and always compiled in. It is possible to exclude certain parts of the Performance Schema instrumentation. For example, to exclude stage and statement instrumentation, do this:
 ```shell
 cmake . \
