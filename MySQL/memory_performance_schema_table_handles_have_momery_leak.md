@@ -68,7 +68,7 @@ performance_schema                                              = 1
 performance_schema_max_table_instances 				= 10000
 performance_schema_digests_size 				= 10000
 ```
-###
+### 清理内存碎片
 ```shell
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
 45305 mysql     20   0   28.4g    25g   8400 S  48.5 81.4  64:46.82 mysqld
