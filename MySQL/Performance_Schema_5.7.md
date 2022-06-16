@@ -69,7 +69,7 @@ UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
 ```
 
 |Formats|	Description	|Default	|
-|----------------------|:---------------------------------------------------------------------|:---------:|
+|:----------------------|:---------------------------------------------------------------------|:---------:|
 |DISABLE_PSI_COND	|Exclude Performance Schema condition instrumentation	|OFF|		
 |DISABLE_PSI_FILE	|Exclude Performance Schema file instrumentation	|OFF|		
 |DISABLE_PSI_IDLE	|Exclude Performance Schema idle instrumentation	|OFF|		
