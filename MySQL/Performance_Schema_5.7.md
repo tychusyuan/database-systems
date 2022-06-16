@@ -67,7 +67,14 @@ select * from performance_schema.setup_consumers;
 ```sql
 UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
 ```
-
+## Performance Schema Build Configuration
+### The Performance Schema is mandatory and always compiled in. It is possible to exclude certain parts of the Performance Schema instrumentation. For example, to exclude stage and statement instrumentation, do this:
+```shell
+cmake . \
+        -DDISABLE_PSI_STAGE=1 \
+        -DDISABLE_PSI_STATEMENT=1
+```
+### the descriptions of the DISABLE_PSI_XXX CMake options 
 |Formats|	Description	|Default	|
 |:----------------------|:---------------------------------------------------------------------|:---------:|
 |DISABLE_PSI_COND	|Exclude Performance Schema condition instrumentation	|OFF|		
@@ -86,3 +93,8 @@ UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
 |DISABLE_PSI_TABLE	|Exclude Performance Schema table instrumentation	|OFF|		
 |DISABLE_PSI_THREAD	|Exclude the performance schema thread instrumentation	|OFF|		
 |DISABLE_PSI_TRANSACTION	|Exclude the performance schema transaction instrumentation	|OFF|		
+
+### To verify whether a server was built with Performance Schema support, check its help output. If the Performance Schema is available, the output mentions several variables with names that begin with performance_schema:
+```shell
+bin/mysqld --verbose --help | grep performance-schema
+```
