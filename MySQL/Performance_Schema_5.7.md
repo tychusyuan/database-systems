@@ -98,3 +98,60 @@ cmake . \
 ```shell
 bin/mysqld --verbose --help | grep performance-schema
 ```
+## 3. Performance Schema Startup Configuration
+### To control an instrument at server startup, use an option of this form:
+```
+--performance-schema-instrument='instrument_name=value'
+```
+Here, instrument_name is an instrument name such as wait/synch/mutex/sql/LOCK_open, and value is one of these values:
+
+OFF, FALSE, or 0: Disable the instrument
+
+ON, TRUE, or 1: Enable and time the instrument
+
+COUNTED: Enable and count (rather than time) the instrument
+
+Each --performance-schema-instrument option can specify only one instrument name, but multiple instances of the option can be given to configure multiple instruments. In addition, patterns are permitted in instrument names to configure instruments that match the pattern. To configure all condition synchronization instruments as enabled and counted, use this option:
+```
+--performance-schema-instrument='wait/synch/cond/%=COUNTED'
+```
+To disable all instruments, use this option:
+```
+--performance-schema-instrument='%=OFF'
+```
+Exception: The memory/performance_schema/% instruments are built in and cannot be disabled at startup.
+
+Longer instrument name strings take precedence over shorter pattern names, regardless of order. For information about specifying patterns to select instruments, see Section 25.4.9, “Naming Instruments or Consumers for Filtering Operations”.
+
+An unrecognized instrument name is ignored. It is possible that a plugin installed later may create the instrument, at which time the name is recognized and configured.
+
+To control a consumer at server startup, use an option of this form:
+```
+--performance-schema-consumer-consumer_name=value
+```
+Here, consumer_name is a consumer name such as events_waits_history, and value is one of these values:
+
+OFF, FALSE, or 0: Do not collect events for the consumer
+
+ON, TRUE, or 1: Collect events for the consumer
+
+For example, to enable the events_waits_history consumer, use this option:
+```
+--performance-schema-consumer-events-waits-history=ON
+```
+To change the value of Performance Schema system variables, set them at server startup. For example, put the following lines in a my.cnf file to change the sizes of the history tables for wait events:
+```
+[mysqld]
+performance_schema
+performance_schema_events_waits_history_size=20
+performance_schema_events_waits_history_long_size=15000
+```
+The Performance Schema automatically sizes the values of several of its parameters at server startup if they are not set explicitly. For example, it sizes the parameters that control the sizes of the events waits tables this way. the Performance Schema allocates memory incrementally, scaling its memory use to actual server load, instead of allocating all the memory it needs during server startup. Consequently, many sizing parameters need not be set at all. To see which parameters are autosized or autoscaled, use mysqld --verbose --help and examine the option descriptions, or see Section 25.15, “Performance Schema System Variables”.
+
+For each autosized parameter that is not set at server startup, the Performance Schema determines how to set its value based on the value of the following system values, which are considered as “hints” about how you have configured your MySQL server:
+```
+max_connections
+open_files_limit
+table_definition_cache
+table_open_cache
+```
