@@ -157,7 +157,8 @@ The Performance Schema automatically sizes the values of several of its paramete
 |performance_schema_events_stages_history_size	|Yes	|Yes	|Yes	|Global	No|
 |performance_schema_events_statements_history_long_size	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_events_statements_history_size	|Yes	|Yes	|Yes	|Global	|No|
-|performance_schema_events_transactions_history_long_size	Yes	|Yes	|Yes	|Global|	No|
+|performance_schema_events_transactions_history_long_size	|Yes	|Yes	|Yes	|Global	|No|
+
 |performance_schema_events_transactions_history_size	|Yes	|Yes	|Yes	Global	No
 |performance_schema_events_waits_history_long_size	Yes	Yes	|Yes	Global	No
 |performance_schema_events_waits_history_size	Yes	Yes	Yes	Global	No
