@@ -15,6 +15,7 @@ SHOW VARIABLES LIKE 'performance_schema';
 | performance_schema | ON    |
 +--------------------+-------+
 ```
+### The Performance Schema is implemented as a storage engine
 ```sql
 SHOW ENGINES;
 ```
@@ -42,4 +43,18 @@ SELECT * FROM INFORMATION_SCHEMA.ENGINES WHERE ENGINE='PERFORMANCE_SCHEMA';
 +--------------------+---------+--------------------+--------------+------+------------+
 | PERFORMANCE_SCHEMA | YES     | Performance Schema | NO           | NO   | NO         |
 +--------------------+---------+--------------------+--------------+------+------------+
+```
+### Performance Schema tables
+```sql
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'performance_schema';
+```
+```sql
+SHOW TABLES FROM performance_schema;
+```
+### not all instruments and consumers are enabled. To turn all of these on and enable event timing, execute two statements
+```sql
+UPDATE performance_schema.setup_instruments SET ENABLED = 'YES', TIMED = 'YES';
+```
+```sql
+UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
 ```
