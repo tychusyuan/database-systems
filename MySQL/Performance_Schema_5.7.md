@@ -187,8 +187,8 @@ The Performance Schema automatically sizes the values of several of its paramete
 |performance_schema_max_table_instances	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_max_table_lock_stat	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_max_thread_classes	|Yes	|Yes	|Yes	|Global	|No|
-|performance_schema_max_thread_instances	|Yes	|Yes	|Yes	|Global	No|
-|performance_schema_session_connect_attrs_size	|Yes	|Yes	|Yes	|Global	No|
+|performance_schema_max_thread_instances	|Yes	|Yes	|Yes	|Global	|No|
+|performance_schema_session_connect_attrs_size	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_setup_actors_size	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_setup_objects_size	|Yes	|Yes	|Yes	|Global	|No|
 |performance_schema_show_processlist	|Yes	|Yes	|Yes	|Global	|Yes|
