@@ -67,3 +67,21 @@ select * from performance_schema.setup_consumers;
 ```sql
 UPDATE performance_schema.setup_consumers SET ENABLED = 'YES';
 ```
+
+|Formats|	Description	|Default	|
+|DISABLE_PSI_COND	|Exclude Performance Schema condition instrumentation	|OFF|		
+|DISABLE_PSI_FILE	|Exclude Performance Schema file instrumentation	|OFF|		
+|DISABLE_PSI_IDLE	|Exclude Performance Schema idle instrumentation	|OFF|		
+|DISABLE_PSI_MEMORY	|Exclude Performance Schema memory instrumentation	|OFF|		
+|DISABLE_PSI_METADATA	|Exclude Performance Schema metadata instrumentation	|OFF|		
+|DISABLE_PSI_MUTEX	|Exclude Performance Schema mutex instrumentation	|OFF|		
+|DISABLE_PSI_PS	|Exclude the performance schema prepared statements	|OFF|		
+|DISABLE_PSI_RWLOCK	|Exclude Performance Schema rwlock instrumentation	|OFF|		
+|DISABLE_PSI_SOCKET	|Exclude Performance Schema socket instrumentation	|OFF|		
+|DISABLE_PSI_SP	|Exclude Performance Schema stored program instrumentation	|OFF|		
+|DISABLE_PSI_STAGE	|Exclude Performance Schema stage instrumentation	|OFF|		
+|DISABLE_PSI_STATEMENT	|Exclude Performance Schema statement instrumentation	|OFF|		
+|DISABLE_PSI_STATEMENT_DIGEST	|Exclude Performance Schema statements_digest instrumentation	|OFF|		
+|DISABLE_PSI_TABLE	|Exclude Performance Schema table instrumentation	|OFF|		
+|DISABLE_PSI_THREAD	|Exclude the performance schema thread instrumentation	|OFF|		
+|DISABLE_PSI_TRANSACTION	|Exclude the performance schema transaction instrumentation	|OFF|		
