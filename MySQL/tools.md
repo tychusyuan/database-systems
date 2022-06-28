@@ -31,3 +31,10 @@ ORDER BY information_schema.TABLES.DATA_LENGTH DESC LIMIT 20;
 ```sql
 SELECT * FROM mysql.innodb_table_stats order by last_update desc limit 50;
 ```
+## pt-tools
+### pt-query-digest
+#### slow query
+```shell
+pt-query-digest --explain localhost -P3306 -uadmin -ppassword --type slowlog --limit 100% --order-by Query_time:sum --since '2022-06-28 00:00:00' --until '2022-06-28 00:30:00' slow.log > slow_query.txt
+
+```
