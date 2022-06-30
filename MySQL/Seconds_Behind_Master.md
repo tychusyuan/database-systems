@@ -34,3 +34,18 @@ SHOW GLOBAL VARIABLES WHERE Variable_Name IN ('innodb_flush_log_at_trx_commit','
 +--------------------------------+-------+
 2 rows in set (0.14 sec)
 ```
+## Multi-Threaded Replication
+### 开启
+```
+stop slave;
+set global slave_parallel_type='LOGICAL_CLOCK';
+set global slave_parallel_workers=8;
+start slave;
+```
+### 关闭
+```
+stop slave;
+set global slave_parallel_type='DATABASE';
+set global slave_parallel_workers=0;
+start slave;
+```
