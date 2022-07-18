@@ -4,6 +4,11 @@
 ```shell
 ping host | while read pong; do echo "$(date): $pong"; done
 ```
+### 按内存排序
+```shell
+ps aux --sort=+rss
+```
+
 ### MySQL 内存观察 writeable/private 是否增长
 ```shell
 while true; do pmap -d  24645  | tail -1; sleep 2; done
