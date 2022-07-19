@@ -4,6 +4,11 @@
 sudo apt install make cmake pkg-config bison gcc g++ libaio-dev libncurses5-dev libreadline-dev libcurl4-openssl-dev
 ```
 
+## centos 7
+```shell
+sudo yum install -y gcc.x86_64 gcc-c++ cmake libaio-devel ncurses-devel readline-devel libcurl-devel.x86_64
+```
+
 ## openssl
 ```shell
 wget https://www.openssl.org/source/openssl-1.1.1n.tar.gz
