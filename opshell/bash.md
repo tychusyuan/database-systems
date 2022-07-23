@@ -1,5 +1,10 @@
 # Bash
 
+### 生成 rsa key
+```shell
+ssh-keygen -t rsa
+```
+
 ### ping with datetime
 ```shell
 ping host | while read pong; do echo "$(date): $pong"; done
