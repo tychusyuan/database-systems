@@ -5,6 +5,11 @@
 ssh-keygen -t rsa
 ```
 
+### 主机 信任
+```shell
+ ssh-copy-id remoteuser@remoteserver
+```
+
 ### ping with datetime
 ```shell
 ping host | while read pong; do echo "$(date): $pong"; done
