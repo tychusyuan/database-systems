@@ -23,3 +23,7 @@ ansible mysql -m yum -a "name=acme state=present"
 ```shell
 ansible web -m service -a "name=httpd state=started"
 ```
+### 
+```shell
+ansible -i iplist all -m shell -u root -a "cat /home/work/opbin/falcon_redis/conf/redisConf.yaml | grep ${product_name}"
+```
