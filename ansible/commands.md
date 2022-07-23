@@ -9,6 +9,11 @@ ansible all -m setup
 ansible mysql -a "/bin/echo hello"
 ```
 
+```shell
+ansible -i hosts all -m shell -u root -a "init 0"
+```
+
+
 ###
 ```shell
 ansible mysql -m copy -a "src=/etc/hosts dest=/tmp/hosts"
