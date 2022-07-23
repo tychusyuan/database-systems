@@ -1,0 +1,33 @@
+- name: Install the compiler package
+  yum: 
+    name:
+      - gcc
+      - gcc-c++
+      - cmake
+      - libaio-devel
+      - ncurses-devel
+      - readline-devel
+      - libcurl-devel
+      - vim-enhanced 
+    state: present
+
+- name: Copy jemalloc
+  copy:
+    src: roles/common/files/jemalloc-3.6.0.tgz
+    dest: /opt/jemalloc-3.6.0.tgz
+
+- name: Unarchive jemalloc
+  unarchive:
+    src: /opt/jemalloc-3.6.0.tgz
+    dest: /opt/
+    remote_src: yes
+
+- name: jemalloc | Compile and install
+  become: true
+  command: "{{ item }}"
+  args:
+    chdir: /opt/jemalloc-3.6.0/
+  with_items:
+    - ./configure
+    - make
+    - make install

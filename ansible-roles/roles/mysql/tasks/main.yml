@@ -1,0 +1,68 @@
+- name: Create a directory if it does not exist
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /home/work/app
+    - /home/work/etc
+    - /home/work/data
+    - /home/work/src
+    - /home/work/log
+    - /home/work/data
+    - /home/work/tmp
+
+- name: Copy openssl
+  copy:
+    src: roles/mysql/files/openssl-1.1.1q.tar.gz
+    dest: /home/work/src/openssl-1.1.1q.tar.gz
+
+- name: Unarchive openssl
+  unarchive:
+    src: /home/work/src/openssl-1.1.1q.tar.gz
+    dest: /home/work/src/
+    remote_src: yes
+
+- name: openssl | Compile and install
+  become: true
+  become_user: work
+  command: "{{ item }}"
+  args:
+    chdir: /home/work/src/openssl-1.1.1q/
+  with_items:
+    - ./config --prefix=/home/work/app/openssl-1.1.1q
+    - make -j 4
+    - make install_sw
+
+- name: Copy percona
+  copy:
+    src: roles/mysql/files/percona-server-5.7.38-41.tar.gz
+    dest: /home/work/src/percona-server-5.7.38-41.tar.gz
+
+- name: Unarchive percona
+  unarchive:
+    src: /home/work/src/percona-server-5.7.38-41.tar.gz
+    dest: /home/work/src/
+    remote_src: yes
+
+- name: Copy boost_1_59_0
+  copy:
+    src: roles/mysql/files/boost_1_59_0.tgz
+    dest: /home/work/src/percona-server-5.7.38-41/boost_1_59_0.tgz
+
+- name: Unarchive boost_1_59_0
+  unarchive:
+    src: /home/work/src/percona-server-5.7.38-41/boost_1_59_0.tgz
+    dest: /home/work/src/percona-server-5.7.38-41/
+    remote_src: yes
+
+
+- name: percona | Compile and install
+  become: true
+  become_user: work
+  command: "{{ item }}"
+  args:
+    chdir: /home/work/src/percona-server-5.7.38-41/
+  with_items:
+    - cmake . -DCMAKE_INSTALL_PREFIX=/home/work/app/percona-server-5.7.38-41 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_CONFIG=mysql_release -DFEATURE_SET=community -DWITH_EMBEDDED_SERVER=OFF -DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_general_ci -DDOWNLOAD_BOOST=1 -DWITH_BOOST=boost_1_59_0 -DWITHOUT_ROCKSDB_STORAGE_ENGINE=1 -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 -DWITH_SSL=/home/work/app/openssl-1.1.1q -DWITH_ZLIB=bundled
+    - make -j 4
+    - make install
