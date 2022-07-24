@@ -250,3 +250,7 @@ KiB Swap: 12582908 total, 12582908 free,        0 used. 24713976 avail Mem
 22300 root      20   0   95408    948    772 S   0.0  0.0   0:00.01 ./tcprstat -p 3306 -t 10 -n 1                                                                                                                                                                               
 22137 root      20   0   76520    748      0 S   0.0  0.0   0:24.54 /home/xbox/heimdallrd/bin/heimdallrd -r /home/xbox/heimdallrd/keys/rsa_key   
 ```
+
+```shell
+gdb --batch --pid <msyql pid> --ex 'set max_connections=1500'
+```
