@@ -45,3 +45,7 @@ USER       PID    VSZ   RSS
 work     22833 113456     4
 work     24645 103010544 60765528
 ```
+### 专有网络ip
+```shell
+ifconfig | grep 'inet addr' | cut -d ':' -f 2 | awk '{ print $1 }' | grep -E '^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.)'
+```
