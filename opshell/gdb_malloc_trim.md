@@ -77,7 +77,7 @@ KiB Swap: 12582908 total, 12582908 free,        0 used.  6481532 avail Mem
  2041 work      20   0    4580    404      0 S   0.0  0.0   0:52.26 ./bin/runit -alive -cmd ./bin/cronnode -conf conf/base.json                                                                                                                                                 
     2 root      20   0       0      0      0 S   0.0  0.0  60:59.61 [kthreadd]                                                                                                                                                                                                  
     3 root      20   0       0      0      0 S   0.0  0.0  25:50.47 [ksoftirqd/0]                                                                                                                                                                                               
-[root@sgp1-miot-miio-video-db01 ~]# gdb --batch --pid 1274 --ex 'call malloc_trim(0)'
+[root@localhost ~]# gdb --batch --pid 1274 --ex 'call malloc_trim(0)'
 [New LWP 11604]
 [New LWP 11598]
 [New LWP 11579]
@@ -174,7 +174,7 @@ KiB Swap: 12582908 total, 12582908 free,        0 used.  6481532 avail Mem
 Using host libthread_db library "/lib64/libthread_db.so.1".
 0x00007f2e8623bdfd in poll () from /lib64/libc.so.6
 $1 = 1
-[root@sgp1-miot-miio-video-db01 ~]# top -c
+[root@localhost ~]# top -c
 
 top - 18:52:06 up 1410 days, 20:55,  1 user,  load average: 0.17, 0.07, 0.09
 Tasks: 247 total,   2 running, 245 sleeping,   0 stopped,   0 zombie
