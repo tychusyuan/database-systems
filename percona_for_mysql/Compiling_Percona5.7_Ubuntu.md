@@ -51,7 +51,7 @@ export LD_PRELOAD="/home/work/app/mysql/lib/libjemalloc.so"
 ## 启动mysql后，检查是否使用jemalloc
 
 ```shell
-sudo lsof -Pn -p $(pidof mysqld) | grep jemalloc
+for id in $(pidof mysqld); do lsof -Pn -p $id | grep jemalloc;done
 mysqld  15815 work  mem       REG             253,33    4395840 41962974 /home/work/mysql/lib/libjemalloc.so.2
 ```
 
