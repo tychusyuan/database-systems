@@ -7,6 +7,8 @@
 - 当事务需要rollback时，则使用undo log中的记录信息，将data page 数据恢复到事物开启之前的状态，来确保事物的原子性。
 - 当服务意外终止后，可以依据disk中的data page 和 redo log执行 recovery，将数据恢复到crash的前一刻。
 
+[wal](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/writeaheadlog.png)
+
 ## checkpoint
 
 - data page 使用的 buffer pool 不能可能缓存所有的数据，一旦free page 数量不足，则需要将dirty page刷到disk，并放回free list中，等待从disk load data page。
