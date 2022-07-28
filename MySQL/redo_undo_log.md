@@ -62,7 +62,7 @@ Checkpoint age        169026024
 
 ![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/redolog.png)
 
-innodb_log_buffer_size
+### innodb_log_buffer_size
 
 |Command-Line Format|	--innodb-log-buffer-size=#|
 |--|--|
@@ -76,7 +76,7 @@ innodb_log_buffer_size
 
 The size in bytes of the buffer that InnoDB uses to write to the log files on disk. The default value changed from 8MB to 16MB with the introduction of 32KB and 64KB innodb_page_size values. A large log buffer enables large transactions to run without the need to write the log to disk before the transactions commit. Thus, if you have transactions that update, insert, or delete many rows, making the log buffer larger saves disk I/O. For related information, see Memory Configuration, and Section 8.5.4, “Optimizing InnoDB Redo Logging”. For general I/O tuning advice, see Section 8.5.8, “Optimizing InnoDB Disk I/O”.
 
-innodb_log_checkpoint_now
+### innodb_log_checkpoint_now
 
 |Command-Line Format	|--innodb-log-checkpoint-now=OFF/ON|
 |--|--|
@@ -88,7 +88,7 @@ innodb_log_checkpoint_now
 
 Enable this debug option to force InnoDB to write a checkpoint. This option is only available if debugging support is compiled in using the WITH_DEBUG CMake option.
 
-innodb_log_checksums
+### innodb_log_checksums
 
 |Command-Line Format	|--innodb-log-checksums=OFF/ON|
 |--|--|
@@ -104,7 +104,7 @@ innodb_log_checksums=ON enables the CRC-32C checksum algorithm for redo log page
 
 Checksums on the redo log header page and redo log checkpoint pages are never disabled.
 
-innodb_log_compressed_pages
+### innodb_log_compressed_pages
 
 |Command-Line Format|	--innodb-log-compressed-pages=OFF/ON|
 |--|--|
@@ -122,7 +122,7 @@ To measure the effect of enabling or disabling innodb_log_compressed_pages, comp
 
 For related information, see Section 14.9.1.6, “Compression for OLTP Workloads”.
 
-innodb_log_file_size
+### innodb_log_file_size
 
 |Command-Line Format	|--innodb-log-file-size=#|
 |--|--|
@@ -144,7 +144,7 @@ The minimum innodb_log_file_size value was increased from 1MB to 4MB in MySQL 5.
 
 For related information, see Redo Log File Configuration. For general I/O tuning advice, see Section 8.5.8, “Optimizing InnoDB Disk I/O”.
 
-innodb_log_files_in_group
+### innodb_log_files_in_group
 
 |Command-Line Format	|--innodb-log-files-in-group=#|
 |--|--|
@@ -160,7 +160,7 @@ The number of log files in the log group. InnoDB writes to the files in a circul
 
 For related information, see Redo Log File Configuration.
 
-innodb_log_group_home_dir
+### innodb_log_group_home_dir
 
 |Command-Line Format	|--innodb-log-group-home-dir=dir_name|
 |--|--|
@@ -173,7 +173,7 @@ The directory path to the InnoDB redo log files, whose number is specified by in
 
 For related information, see Redo Log File Configuration.
 
-innodb_log_write_ahead_size
+### innodb_log_write_ahead_size
 
 |Command-Line Format	|--innodb-log-write-ahead-size=#|
 |--|--|
