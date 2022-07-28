@@ -573,6 +573,11 @@ Checkpoint age        169026024
 0 pending log flushes, 0 pending chkp writes
 2413674629 log i/o's done, 818.95 log i/o's/second
 ```
+- Log sequence number: redo lsn
+- Log flushed up to : redo log flushed disk lsn
+- Pages flushed up to : data pages flushed disk lsn
+- Last checkpoint at : last checkpoint lsn
+
 ```sql
 ----------------------
 BUFFER POOL AND MEMORY
