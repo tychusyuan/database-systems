@@ -1,7 +1,12 @@
+```sql
 =====================================
 2022-07-28 10:22:42 0x7fe4d0ace700 INNODB MONITOR OUTPUT
 =====================================
 Per second averages calculated from the last 21 seconds
+```
+Make sure data is sampled for at least 20-30 seconds. If averages are calculated for last 0 or 1 second they are pretty much unusable.
+
+
 -----------------
 BACKGROUND THREAD
 -----------------
@@ -24,20 +29,20 @@ LATEST DETECTED DEADLOCK
 TRANSACTION 79624759936, ACTIVE 0 sec inserting
 mysql tables in use 1, locked 1
 LOCK WAIT 3 lock struct(s), heap size 1136, 2 row lock(s), undo log entries 1
-MySQL thread id 8549214, OS thread handle 140620751025920, query id 39084605259 10.58.35.2 miio_x update
-insert into deviceSetting (`uid`,`did`,`key`,`value`,`last_modify`) values (251081666,'blt.1.1a6j65qgt4g01','2022-05-26','{\"data\":{\"date\":\"2022-05-26\",\"data\":[{\"balance\":67,\"coverage\":33,\"duration\":64,\"over\":0,\"score\":50,\"date\":\"2022-05-26 21:49:29\",\"diagram1\":[true,true,false,false,true,false],\"diagram2\":[false,false,false,false,false,false],\"dateTimer\":1653572969000}],\"dateTimer\":1653494400000,\"score\":50,\"balance\":67,\"coverage\":33,\"duration\":64,\"over\":0},\"timestamp\":1658269502441}',1658269503) ON DUPLICATE KEY UPDATE `uid`=values(`uid`),`did`=values(`did`),`key`=values(`key`),`value`=values(`value`),`last_modify`=values(`last_modify`)
+MySQL thread id 8549214, OS thread handle 140620751025920, query id 39084605259 10.58.35.2 test_x update
+insert into test_table (`uid`,`did`,`key`,`value`,`last_modify`) values (251081666,'blt.1.1a6j65qgt4g01','2022-05-26','{\"data\":{\"date\":\"2022-05-26\",\"data\":[{\"balance\":67,\"coverage\":33,\"duration\":64,\"over\":0,\"score\":50,\"date\":\"2022-05-26 21:49:29\",\"diagram1\":[true,true,false,false,true,false],\"diagram2\":[false,false,false,false,false,false],\"dateTimer\":1653572969000}],\"dateTimer\":1653494400000,\"score\":50,\"balance\":67,\"coverage\":33,\"duration\":64,\"over\":0},\"timestamp\":1658269502441}',1658269503) ON DUPLICATE KEY UPDATE `uid`=values(`uid`),`did`=values(`did`),`key`=values(`key`),`value`=values(`value`),`last_modify`=values(`last_modify`)
 *** (1) WAITING FOR THIS LOCK TO BE GRANTED:
-RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `miio`.`deviceSetting` trx id 79624759936 lock_mode X locks gap before rec insert intention waiting
+RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `test`.`test_table` trx id 79624759936 lock_mode X locks gap before rec insert intention waiting
 *** (2) TRANSACTION:
 TRANSACTION 79624759935, ACTIVE 0 sec inserting, thread declared inside InnoDB 1
 mysql tables in use 1, locked 1
 4 lock struct(s), heap size 1136, 3 row lock(s), undo log entries 1
-MySQL thread id 8549322, OS thread handle 140620501346048, query id 39084605258 10.58.1.34 miio_x update
-insert into deviceSetting (`uid`,`did`,`key`,`value`,`last_modify`) values (251081666,'blt.1.1a6j65qgt4g01','2022-05-27','{\"data\":{\"date\":\"2022-05-27\",\"data\":[{\"balance\":68,\"coverage\":33,\"duration\":83,\"over\":0,\"score\":61,\"date\":\"2022-05-27 06:34:28\",\"diagram1\":[true,true,false,false,true,false],\"diagram2\":[false,false,false,false,false,false],\"dateTimer\":1653604468000},{\"balance\":69,\"coverage\":50,\"duration\":87,\"over\":0,\"score\":67,\"date\":\"2022-05-27 20:46:28\",\"diagram1\":[true,true,false,false,true,false],\"diagram2\":[false,false,false,false,false,false],\"dateTimer\":1653655588000}],\"dateTimer\":1653580800000,\"score\":64,\"balance\":68,\"coverage\":41,\"duration\":85,\"over\":0},\"timestamp\":1658269502440}',1658269503) ON DUPLICATE KEY UPDATE `uid`=values(`uid`),`did`=values(`did`),`key`=values(`key`),`value`=values(`value`),`last_modify`=values(`last_modify`
+MySQL thread id 8549322, OS thread handle 140620501346048, query id 39084605258 10.58.1.34 test_x update
+insert into test_table (`uid`,`did`,`key`,`value`,`last_modify`) values (251081666,'blt.1.1a6j65qgt4g01','2022-05-27','{\"data\":{\"date\":\"2022-05-27\",\"data\":[{\"balance\":68,\"coverage\":33,\"duration\":83,\"over\":0,\"score\":61,\"date\":\"2022-05-27 06:34:28\",\"diagram1\":[true,true,false,false,true,false],\"diagram2\":[false,false,false,false,false,false],\"dateTimer\":1653604468000},{\"balance\":69,\"coverage\":50,\"duration\":87,\"over\":0,\"score\":67,\"date\":\"2022-05-27 20:46:28\",\"diagram1\":[true,true,false,false,true,false],\"diagram2\":[false,false,false,false,false,false],\"dateTimer\":1653655588000}],\"dateTimer\":1653580800000,\"score\":64,\"balance\":68,\"coverage\":41,\"duration\":85,\"over\":0},\"timestamp\":1658269502440}',1658269503) ON DUPLICATE KEY UPDATE `uid`=values(`uid`),`did`=values(`did`),`key`=values(`key`),`value`=values(`value`),`last_modify`=values(`last_modify`
 *** (2) HOLDS THE LOCK(S):
-RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `miio`.`deviceSetting` trx id 79624759935 lock_mode X locks gap before rec
+RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `test`.`test_table` trx id 79624759935 lock_mode X locks gap before rec
 *** (2) WAITING FOR THIS LOCK TO BE GRANTED:
-RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `miio`.`deviceSetting` trx id 79624759935 lock_mode X locks gap before rec insert intention waiting
+RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `test`.`test_table` trx id 79624759935 lock_mode X locks gap before rec insert intention waiting
 *** WE ROLL BACK TRANSACTION (1)
 ------------
 TRANSACTIONS
