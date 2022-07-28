@@ -85,6 +85,7 @@ innodb_log_checkpoint_now
 |Dynamic	|Yes|
 |Type	|Boolean|
 |Default Value	|OFF|
+
 Enable this debug option to force InnoDB to write a checkpoint. This option is only available if debugging support is compiled in using the WITH_DEBUG CMake option.
 
 innodb_log_checksums
@@ -96,6 +97,7 @@ innodb_log_checksums
 |Dynamic|	Yes|
 |Type	|Boolean|
 |Default Value|	ON|
+
 Enables or disables checksums for redo log pages.
 
 innodb_log_checksums=ON enables the CRC-32C checksum algorithm for redo log pages. When innodb_log_checksums is disabled, the contents of the redo log page checksum field are ignored.
@@ -132,6 +134,7 @@ innodb_log_file_size
 |Minimum Value (≤ 5.7.10)	|1048576|
 |Maximum Value	|512GB / innodb_log_files_in_group|
 |Unit	|bytes|
+
 The size in bytes of each log file in a log group. The combined size of log files (innodb_log_file_size * innodb_log_files_in_group) cannot exceed a maximum value that is slightly less than 512GB. A pair of 255 GB log files, for example, approaches the limit but does not exceed it. The default value is 48MB.
 
 Generally, the combined size of the log files should be large enough that the server can smooth out peaks and troughs in workload activity, which often means that there is enough redo log space to handle more than an hour of write activity. The larger the value, the less checkpoint flush activity is required in the buffer pool, saving disk I/O. Larger log files also make crash recovery slower.
@@ -164,6 +167,7 @@ innodb_log_group_home_dir
 |Scope	|Global|
 ||Dynamic	|No|
 |Type	|Directory name|
+
 The directory path to the InnoDB redo log files, whose number is specified by innodb_log_files_in_group. If you do not specify any InnoDB log variables, the default is to create two files named ib_logfile0 and ib_logfile1 in the MySQL data directory. Log file size is given by the innodb_log_file_size system variable.
 
 For related information, see Redo Log File Configuration.
@@ -180,6 +184,7 @@ innodb_log_write_ahead_size
 |Minimum Value	|512 (log file block size)|
 |Maximum Value	|Equal to innodb_page_size|
 |Unit	|bytes|
+
 Defines the write-ahead block size for the redo log, in bytes. To avoid “read-on-write”, set innodb_log_write_ahead_size to match the operating system or file system cache block size. The default setting is 8192 bytes. Read-on-write occurs when redo log blocks are not entirely cached to the operating system or file system due to a mismatch between write-ahead block size for the redo log and operating system or file system cache block size.
 
 Valid values for innodb_log_write_ahead_size are multiples of the InnoDB log file block size (2n). The minimum value is the InnoDB log file block size (512). Write-ahead does not occur when the minimum value is specified. The maximum value is equal to the innodb_page_size value. If you specify a value for innodb_log_write_ahead_size that is larger than the innodb_page_size value, the innodb_log_write_ahead_size setting is truncated to the innodb_page_size value.
