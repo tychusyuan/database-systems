@@ -79,6 +79,7 @@ The size in bytes of the buffer that InnoDB uses to write to the log files on di
 innodb_log_checkpoint_now
 
 |Command-Line Format	|--innodb-log-checkpoint-now[={OFF|ON}]|
+|--|--|
 |System Variable	|innodb_log_checkpoint_now|
 |Scope	|Global|
 |Dynamic	|Yes|
@@ -88,7 +89,8 @@ Enable this debug option to force InnoDB to write a checkpoint. This option is o
 
 innodb_log_checksums
 
-|Command-Line Format	|--innodb-log-checksums[={OFF|ON}]
+|Command-Line Format	|--innodb-log-checksums[={OFF|ON}]|
+|--|--|
 |System Variable	|innodb_log_checksums|
 |Scope	|Global|
 |Dynamic|	Yes|
@@ -103,6 +105,7 @@ Checksums on the redo log header page and redo log checkpoint pages are never di
 innodb_log_compressed_pages
 
 |Command-Line Format|	--innodb-log-compressed-pages[={OFF|ON}]|
+|--|--|
 |System Variable	|innodb_log_compressed_pages|
 |Scope	|Global|
 |Dynamic	|Yes|
@@ -119,6 +122,7 @@ For related information, see Section 14.9.1.6, “Compression for OLTP Workloads
 innodb_log_file_size
 
 |Command-Line Format	|--innodb-log-file-size=#|
+|--|--|
 |System Variable	|innodb_log_file_size|
 |Scope	|Global|
 |Dynamic	|No|
@@ -139,6 +143,7 @@ For related information, see Redo Log File Configuration. For general I/O tuning
 innodb_log_files_in_group
 
 |Command-Line Format	|--innodb-log-files-in-group=#|
+|--|--|
 |System Variable	|innodb_log_files_in_group|
 |Scope	|Global|
 |Dynamic	|No|
@@ -154,6 +159,7 @@ For related information, see Redo Log File Configuration.
 innodb_log_group_home_dir
 
 |Command-Line Format	|--innodb-log-group-home-dir=dir_name|
+|--|--|
 |System Variable	|innodb_log_group_home_dir|
 |Scope	|Global|
 ||Dynamic	|No|
@@ -165,6 +171,7 @@ For related information, see Redo Log File Configuration.
 innodb_log_write_ahead_size
 
 |Command-Line Format	--innodb-log-write-ahead-size=#|
+|--|--|
 |System Variable	|innodb_log_write_ahead_size|
 |Scope	|Global|
 |Dynamic	|Yes|
