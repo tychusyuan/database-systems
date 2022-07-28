@@ -6,12 +6,15 @@ Per second averages calculated from the last 21 seconds
 ```
 Make sure data is sampled for at least 20-30 seconds. If averages are calculated for last 0 or 1 second they are pretty much unusable.
 
-
+```sql
 -----------------
 BACKGROUND THREAD
 -----------------
 srv_master_thread loops: 34087406 srv_active, 0 srv_shutdown, 524364 srv_idle
 srv_master_thread log flush and writes: 34611744
+```
+
+```sql
 ----------
 SEMAPHORES
 ----------
@@ -21,6 +24,11 @@ RW-shared spins 0, rounds 435162192, OS waits 71608446
 RW-excl spins 0, rounds 561832245, OS waits 3542731
 RW-sx spins 4287926, rounds 34008065, OS waits 181852
 Spin rounds per wait: 435162192.00 RW-shared, 561832245.00 RW-excl, 7.93 RW-sx
+```
+Shared: offers shared access to the resource. Multiple shared locks are allowed.
+Exclusive: offers exclusive access to the resource. Shared locks wait for exclusive locks.
+Shared-Exclusive (SX): offer write access to the resource with inconsistent read. (relaxed exclusive).
+```sql
 ------------------------
 LATEST DETECTED DEADLOCK
 ------------------------
@@ -44,6 +52,8 @@ RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of ta
 *** (2) WAITING FOR THIS LOCK TO BE GRANTED:
 RECORD LOCKS space id 6918 page no 623 n bits 360 index uk_idx_uid_did_key of table `test`.`test_table` trx id 79624759935 lock_mode X locks gap before rec insert intention waiting
 *** WE ROLL BACK TRANSACTION (1)
+```
+```
 ------------
 TRANSACTIONS
 ------------
@@ -491,6 +501,8 @@ LIST OF TRANSACTIONS FOR EACH SESSION:
 0 lock struct(s), heap size 1136, 0 row lock(s)
 ---TRANSACTION 422130403645224, not started
 0 lock struct(s), heap size 1136, 0 row lock(s)
+```
+```sql
 --------
 FILE I/O
 --------
@@ -525,6 +537,9 @@ Pending normal aio reads: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] , aio
 Pending flushes (fsync) log: 0; buffer pool: 0
 2348130124 OS file reads, 6603285620 OS file writes, 401533899 OS fsyncs
 0.00 reads/s, 0 avg bytes/read, 818.91 writes/s, 0.95 fsyncs/s
+```
+
+```sql
 -------------------------------------
 INSERT BUFFER AND ADAPTIVE HASH INDEX
 -------------------------------------
@@ -542,6 +557,8 @@ Hash table size 7844257, node heap has 2542 buffer(s)
 Hash table size 7844257, node heap has 183 buffer(s)
 Hash table size 7844257, node heap has 20 buffer(s)
 1939.48 hash searches/s, 2559.69 non-hash searches/s
+```
+```sql
 ---
 LOG
 ---
@@ -555,6 +572,8 @@ Modified age          169026024
 Checkpoint age        169026024
 0 pending log flushes, 0 pending chkp writes
 2413674629 log i/o's done, 818.95 log i/o's/second
+```
+```sql
 ----------------------
 BUFFER POOL AND MEMORY
 ----------------------
@@ -583,6 +602,8 @@ Buffer pool hit rate 1000 / 1000, young-making rate 0 / 1000 not 0 / 1000
 Pages read ahead 0.00/s, evicted without access 0.00/s, Random read ahead 0.00/s
 LRU len: 1875385, unzip_LRU len: 0
 I/O sum[0]:cur[0], unzip sum[0]:cur[0]
+```
+```sql
 ----------------------
 INDIVIDUAL BUFFER POOL INFO
 ----------------------
@@ -722,6 +743,8 @@ Buffer pool hit rate 1000 / 1000, young-making rate 0 / 1000 not 0 / 1000
 Pages read ahead 0.00/s, evicted without access 0.00/s, Random read ahead 0.00/s
 LRU len: 234399, unzip_LRU len: 0
 I/O sum[0]:cur[0], unzip sum[0]:cur[0]
+```
+```sql
 --------------
 ROW OPERATIONS
 --------------
@@ -734,3 +757,4 @@ Number of rows inserted 3586466919, updated 634921403, deleted 348330946, read 1
 ----------------------------
 END OF INNODB MONITOR OUTPUT
 ============================
+```
