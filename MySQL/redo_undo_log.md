@@ -113,6 +113,7 @@ innodb_log_compressed_pages
 |Dynamic	|Yes|
 |Type	|Boolean|
 |Default Value|	ON|
+
 Specifies whether images of re-compressed pages are written to the redo log. Re-compression may occur when changes are made to compressed data.
 
 innodb_log_compressed_pages is enabled by default to prevent corruption that could occur if a different version of the zlib compression algorithm is used during recovery. If you are certain that the zlib version is not subject to change, you can disable innodb_log_compressed_pages to reduce redo log generation for workloads that modify compressed data.
@@ -165,7 +166,7 @@ innodb_log_group_home_dir
 |--|--|
 |System Variable	|innodb_log_group_home_dir|
 |Scope	|Global|
-||Dynamic	|No|
+|Dynamic	|No|
 |Type	|Directory name|
 
 The directory path to the InnoDB redo log files, whose number is specified by innodb_log_files_in_group. If you do not specify any InnoDB log variables, the default is to create two files named ib_logfile0 and ib_logfile1 in the MySQL data directory. Log file size is given by the innodb_log_file_size system variable.
@@ -174,7 +175,7 @@ For related information, see Redo Log File Configuration.
 
 innodb_log_write_ahead_size
 
-|Command-Line Format	--innodb-log-write-ahead-size=#|
+|Command-Line Format	|--innodb-log-write-ahead-size=#|
 |--|--|
 |System Variable	|innodb_log_write_ahead_size|
 |Scope	|Global|
