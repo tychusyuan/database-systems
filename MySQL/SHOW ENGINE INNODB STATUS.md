@@ -25,9 +25,9 @@ RW-excl spins 0, rounds 561832245, OS waits 3542731
 RW-sx spins 4287926, rounds 34008065, OS waits 181852
 Spin rounds per wait: 435162192.00 RW-shared, 561832245.00 RW-excl, 7.93 RW-sx
 ```
-Shared: offers shared access to the resource. Multiple shared locks are allowed.
-Exclusive: offers exclusive access to the resource. Shared locks wait for exclusive locks.
-Shared-Exclusive (SX): offer write access to the resource with inconsistent read. (relaxed exclusive).
+> Shared: offers shared access to the resource. Multiple shared locks are allowed.
+> Exclusive: offers exclusive access to the resource. Shared locks wait for exclusive locks.
+> Shared-Exclusive (SX): offer write access to the resource with inconsistent read. (relaxed exclusive).
 ```sql
 ------------------------
 LATEST DETECTED DEADLOCK
