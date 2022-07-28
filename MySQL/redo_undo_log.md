@@ -19,7 +19,9 @@
   - data page 的 并发读写替代单线程读写，异步读写替代同步读写
 
 ## LSN
-
+```sql
+SHOW ENGINE INNODB STATUS\G
+```
 ```sql
 ---
 LOG
@@ -39,3 +41,19 @@ Checkpoint age        169026024
 - Log flushed up to : redo log flushed disk lsn
 - Pages flushed up to : data pages flushed disk lsn
 - Last checkpoint at : last checkpoint lsn
+
+### LSN 存储位置
+- data page
+- redo log file
+- checkpoint lsn
+
+|Name |Size|Remarks|
+|:--|--|:--|
+|FIL_PAGE_SPACE|4|4 ID of the space the page is in|
+|FIL_PAGE_OFFSET|4|ordinal page number from start of space|
+|FIL_PAGE_PREV|4|offset of previous page in key order|
+|FIL_PAGE_NEXT|4|offset of next page in key order|
+|FIL_PAGE_LSN|8|log serial number of page's latest log record|
+|FIL_PAGE_TYPE|2|current defined types are: FIL_PAGE_INDEX, FIL_PAGE_UNDO_LOG, FIL_PAGE_INODE, FIL_PAGE_IBUF_FREE_LIST|
+|FIL_PAGE_FILE_FLUSH_LSN|8|"the file has been flushed to disk at least up to this lsn" (log serial number), valid only on the first page of the file|
+|FIL_PAGE_ARCH_LOG_NO|4|the latest archived log file number at the time that FIL_PAGE_FILE_FLUSH_LSN was written (in the log)|
