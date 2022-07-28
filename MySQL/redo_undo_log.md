@@ -17,3 +17,25 @@
 - wal提升数据库进程处理性能，包括：
   - log file的 顺序IO替代随机IO，批量读写替代单条写入
   - data page 的 并发读写替代单线程读写，异步读写替代同步读写
+
+## LSN
+
+```sql
+---
+LOG
+---
+Log sequence number 16131164089282
+Log flushed up to   16131163932862
+Pages flushed up to 16130995063258
+Last checkpoint at  16130995063258
+Max checkpoint age    10433226609
+Checkpoint age target 10107188278
+Modified age          169026024
+Checkpoint age        169026024
+0 pending log flushes, 0 pending chkp writes
+2413674629 log i/o's done, 818.95 log i/o's/second
+```
+- Log sequence number: redo lsn
+- Log flushed up to : redo log flushed disk lsn
+- Pages flushed up to : data pages flushed disk lsn
+- Last checkpoint at : last checkpoint lsn
