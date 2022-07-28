@@ -1,4 +1,4 @@
-# redo log
+# redo & undo log
 
 ## WAL (Write Ahead Log)
 
