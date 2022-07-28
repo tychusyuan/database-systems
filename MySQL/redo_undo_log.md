@@ -58,3 +58,6 @@ Checkpoint age        169026024
 |FIL_PAGE_FILE_FLUSH_LSN|8|"the file has been flushed to disk at least up to this lsn" (log serial number), valid only on the first page of the file|
 |FIL_PAGE_ARCH_LOG_NO|4|the latest archived log file number at the time that FIL_PAGE_FILE_FLUSH_LSN was written (in the log)|
 
+## redo log
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/redolog.png)
