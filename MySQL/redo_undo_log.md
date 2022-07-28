@@ -78,7 +78,7 @@ The size in bytes of the buffer that InnoDB uses to write to the log files on di
 
 innodb_log_checkpoint_now
 
-|Command-Line Format	|--innodb-log-checkpoint-now[={OFF|ON}]|
+|Command-Line Format	|--innodb-log-checkpoint-now=OFF/ON|
 |--|--|
 |System Variable	|innodb_log_checkpoint_now|
 |Scope	|Global|
@@ -90,7 +90,7 @@ Enable this debug option to force InnoDB to write a checkpoint. This option is o
 
 innodb_log_checksums
 
-|Command-Line Format	|--innodb-log-checksums[={OFF|ON}]|
+|Command-Line Format	|--innodb-log-checksums=OFF/ON|
 |--|--|
 |System Variable	|innodb_log_checksums|
 |Scope	|Global|
@@ -106,7 +106,7 @@ Checksums on the redo log header page and redo log checkpoint pages are never di
 
 innodb_log_compressed_pages
 
-|Command-Line Format|	--innodb-log-compressed-pages[={OFF|ON}]|
+|Command-Line Format|	--innodb-log-compressed-pages=OFF/ON|
 |--|--|
 |System Variable	|innodb_log_compressed_pages|
 |Scope	|Global|
