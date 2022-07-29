@@ -219,7 +219,9 @@ Write and flush the logs every N seconds. innodb_flush_log_at_timeout allows the
 |Dynamic	|Yes|
 |Type	|Enumeration|
 |Default Value	|1|
-|Valid Values	|0 1 2|
+|Valid Values	|0 |
+||1|
+||2|
 
 Controls the balance between strict ACID compliance for commit operations and higher performance that is possible when commit-related I/O operations are rearranged and done in batches. You can achieve better performance by changing the default value but then you can lose transactions in a crash.
 
@@ -257,8 +259,7 @@ Many operating systems and some disk hardware fool the flush-to-disk operation. 
 |Dynamic	|No|
 |Type	|String|
 |Default Value	|NULL|
-|Valid Values (Unix)	|
-|fsync
+|Valid Values (Unix)	|fsync|
 ||O_DSYNC|
 ||littlesync|
 ||nosync|
