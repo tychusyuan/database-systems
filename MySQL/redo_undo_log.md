@@ -250,32 +250,23 @@ Many operating systems and some disk hardware fool the flush-to-disk operation. 
 
 ### innodb_flush_method
 
-|Command-Line Format	--innodb-flush-method=value|
+|Command-Line Format	|--innodb-flush-method=value|
 |--|--|
-|System Variable	innodb_flush_method|
-|Scope	Global|
-|Dynamic	No|
-|Type	String|
-|Default Value	NULL|
-|Valid Values (Unix)	
+|System Variable	|innodb_flush_method|
+|Scope	|Global|
+|Dynamic	|No|
+|Type	|String|
+|Default Value	|NULL|
+|Valid Values (Unix)	|
 |fsync
-
-O_DSYNC
-
-littlesync
-
-nosync
-
-O_DIRECT
-
-O_DIRECT_NO_FSYNC
-
-Valid Values (Windows)	
-async_unbuffered
-
-normal
-
-unbuffered
+||O_DSYNC|
+||littlesync|
+||nosync|
+||O_DIRECT|
+||O_DIRECT_NO_FSYNC|
+|Valid Values (Windows)	|async_unbuffered|
+||normal|
+||unbuffered|
 
 Defines the method used to flush data to InnoDB data files and log files, which can affect I/O throughput.
 
