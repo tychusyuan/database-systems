@@ -284,7 +284,7 @@ littlesync: This option is used for internal performance testing and is currentl
 nosync: This option is used for internal performance testing and is currently unsupported. Use at your own risk.
 
 O_DIRECT: InnoDB uses O_DIRECT (or directio() on Solaris) to open the data files, and uses fsync() to flush both the data and log files. This option is available on some GNU/Linux versions, FreeBSD, and Solaris.
-
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/linuxfilesystemodirect.jpg)
 O_DIRECT_NO_FSYNC: InnoDB uses O_DIRECT during flushing I/O, but skips the fsync() system call after each write operation.
 
 Prior to MySQL 5.7.25, this setting is not suitable for file systems such as XFS and EXT4, which require an fsync() system call to synchronize file system metadata changes. If you are not sure whether your file system requires an fsync() system call to synchronize file system metadata changes, use O_DIRECT instead.
