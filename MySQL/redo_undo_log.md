@@ -193,3 +193,122 @@ Valid values for innodb_log_write_ahead_size are multiples of the InnoDB log fil
 Setting the innodb_log_write_ahead_size value too low in relation to the operating system or file system cache block size results in “read-on-write”. Setting the value too high may have a slight impact on fsync performance for log file writes due to several blocks being written at once.
 
 For related information, see Section 8.5.4, “Optimizing InnoDB Redo Logging”.
+
+## innodb flush log
+### innodb_flush_log_at_timeout
+
+|Command-Line Format	|--innodb-flush-log-at-timeout=#|
+|--|--|
+|System Variable	|innodb_flush_log_at_timeout|
+|Scope	|Global|
+|Dynamic	|Yes|
+|Type	|Integer|
+|Default Value	|1|
+|Minimum Value	|1|
+|Maximum Value	|2700|
+|Unit	|seconds|
+
+Write and flush the logs every N seconds. innodb_flush_log_at_timeout allows the timeout period between flushes to be increased in order to reduce flushing and avoid impacting performance of binary log group commit. The default setting for innodb_flush_log_at_timeout is once per second.
+
+### innodb_flush_log_at_trx_commit
+
+|Command-Line Format	|--innodb-flush-log-at-trx-commit=#|
+|--|--|
+|System Variable	|innodb_flush_log_at_trx_commit|
+|Scope	|Global|
+|Dynamic	|Yes|
+|Type	|Enumeration|
+|Default Value	|1|
+|Valid Values	|0 1 2|
+
+Controls the balance between strict ACID compliance for commit operations and higher performance that is possible when commit-related I/O operations are rearranged and done in batches. You can achieve better performance by changing the default value but then you can lose transactions in a crash.
+
+The default setting of 1 is required for full ACID compliance. Logs are written and flushed to disk at each transaction commit.
+
+With a setting of 0, logs are written and flushed to disk once per second. Transactions for which logs have not been flushed can be lost in a crash.
+
+With a setting of 2, logs are written after each transaction commit and flushed to disk once per second. Transactions for which logs have not been flushed can be lost in a crash.
+
+For settings 0 and 2, once-per-second flushing is not 100% guaranteed. Flushing may occur more frequently due to DDL changes and other internal InnoDB activities that cause logs to be flushed independently of the innodb_flush_log_at_trx_commit setting, and sometimes less frequently due to scheduling issues. If logs are flushed once per second, up to one second of transactions can be lost in a crash. If logs are flushed more or less frequently than once per second, the amount of transactions that can be lost varies accordingly.
+
+Log flushing frequency is controlled by innodb_flush_log_at_timeout, which allows you to set log flushing frequency to N seconds (where N is 1 ... 2700, with a default value of 1). However, any unexpected mysqld process exit can erase up to N seconds of transactions.
+
+DDL changes and other internal InnoDB activities flush the log independently of the innodb_flush_log_at_trx_commit setting.
+
+InnoDB crash recovery works regardless of the innodb_flush_log_at_trx_commit setting. Transactions are either applied entirely or erased entirely.
+
+For durability and consistency in a replication setup that uses InnoDB with transactions:
+
+If binary logging is enabled, set sync_binlog=1.
+
+Always set innodb_flush_log_at_trx_commit=1.
+
+For information on the combination of settings on a replica that is most resilient to unexpected halts, see Section 16.3.2, “Handling an Unexpected Halt of a Replica”.
+
+Caution
+Many operating systems and some disk hardware fool the flush-to-disk operation. They may tell mysqld that the flush has taken place, even though it has not. In this case, the durability of transactions is not guaranteed even with the recommended settings, and in the worst case, a power outage can corrupt InnoDB data. Using a battery-backed disk cache in the SCSI disk controller or in the disk itself speeds up file flushes, and makes the operation safer. You can also try to disable the caching of disk writes in hardware caches.
+
+### innodb_flush_method
+
+|Command-Line Format	--innodb-flush-method=value|
+|--|--|
+|System Variable	innodb_flush_method|
+|Scope	Global|
+|Dynamic	No|
+|Type	String|
+|Default Value	NULL|
+|Valid Values (Unix)	
+|fsync
+
+O_DSYNC
+
+littlesync
+
+nosync
+
+O_DIRECT
+
+O_DIRECT_NO_FSYNC
+
+Valid Values (Windows)	
+async_unbuffered
+
+normal
+
+unbuffered
+
+Defines the method used to flush data to InnoDB data files and log files, which can affect I/O throughput.
+
+If innodb_flush_method is set to NULL on a Unix-like system, the fsync option is used by default. If innodb_flush_method is set to NULL on Windows, the async_unbuffered option is used by default.
+
+The innodb_flush_method options for Unix-like systems include:
+
+fsync: InnoDB uses the fsync() system call to flush both the data and log files. fsync is the default setting.
+
+O_DSYNC: InnoDB uses O_SYNC to open and flush the log files, and fsync() to flush the data files. InnoDB does not use O_DSYNC directly because there have been problems with it on many varieties of Unix.
+
+littlesync: This option is used for internal performance testing and is currently unsupported. Use at your own risk.
+
+nosync: This option is used for internal performance testing and is currently unsupported. Use at your own risk.
+
+O_DIRECT: InnoDB uses O_DIRECT (or directio() on Solaris) to open the data files, and uses fsync() to flush both the data and log files. This option is available on some GNU/Linux versions, FreeBSD, and Solaris.
+
+O_DIRECT_NO_FSYNC: InnoDB uses O_DIRECT during flushing I/O, but skips the fsync() system call after each write operation.
+
+Prior to MySQL 5.7.25, this setting is not suitable for file systems such as XFS and EXT4, which require an fsync() system call to synchronize file system metadata changes. If you are not sure whether your file system requires an fsync() system call to synchronize file system metadata changes, use O_DIRECT instead.
+
+As of MySQL 5.7.25, fsync() is called after creating a new file, after increasing file size, and after closing a file, to ensure that file system metadata changes are synchronized. The fsync() system call is still skipped after each write operation.
+
+Data loss is possible if redo log files and data files reside on different storage devices, and an unexpected exit occurs before data file writes are flushed from a device cache that is not battery-backed. If you use or intend to use different storage devices for redo log files and data files, and your data files reside on a device with a cache that is not battery-backed, use O_DIRECT instead.
+
+The innodb_flush_method options for Windows systems include:
+
+async_unbuffered: InnoDB uses Windows asynchronous I/O and non-buffered I/O. async_unbuffered is the default setting on Windows systems.
+
+Running MySQL server on a 4K sector hard drive on Windows is not supported with async_unbuffered. The workaround is to use innodb_flush_method=normal.
+
+normal: InnoDB uses simulated asynchronous I/O and buffered I/O.
+
+unbuffered: InnoDB uses simulated asynchronous I/O and non-buffered I/O.
+
+How each setting affects performance depends on hardware configuration and workload. Benchmark your particular configuration to decide which setting to use, or whether to keep the default setting. Examine the Innodb_data_fsyncs status variable to see the overall number of fsync() calls for each setting. The mix of read and write operations in your workload can affect how a setting performs. For example, on a system with a hardware RAID controller and battery-backed write cache, O_DIRECT can help to avoid double buffering between the InnoDB buffer pool and the operating system file system cache. On some systems where InnoDB data and log files are located on a SAN, the default value or O_DSYNC might be faster for a read-heavy workload with mostly SELECT statements. Always test this parameter with hardware and workload that reflect your production environment. For general I/O tuning advice, see Section 8.5.8, “Optimizing InnoDB Disk I/O”.
