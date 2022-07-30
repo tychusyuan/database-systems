@@ -29,20 +29,32 @@
 
 ## Table 14.12 Online DDL Support for Column Operations
 
-|Operation	|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
-|--|--|--|--|--|
-|Adding a column	|Yes	|Yes	|Yes*	|No|
-|Dropping a column	|Yes	|Yes	|Yes	|No|
-|Renaming a column	|Yes	|No	|Yes*	|Yes|
-|Reordering columns	|Yes	|Yes	|Yes	|No|
-|Setting a column default value	|Yes	|No	|Yes	|Yes|
-|Changing the column data type	|No	|Yes	|No	|No|
-|Extending VARCHAR column size	|Yes	|No	|Yes	|Yes|
-|Dropping the column default value	|Yes	|No	|Yes	|Yes|
-|Changing the auto-increment value	|Yes	|No	|Yes	|No*|
-|Making a column NULL	|Yes	|Yes*	|Yes	|No|
-|Making a column NOT NULL	|Yes*	|Yes*	|Yes	|No|
-|Modifying the definition of an ENUM or SET column	|Yes	|No	|Yes	|Yes|
+|Operation	|V|Instant|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
+|--|--|--|--|--|--|--|
+|Adding a column	|5.7||Yes	|Yes	|Yes*	|No|
+||8.0|Yes*	|Yes	|No*	|Yes*	|Yes|
+|Dropping a column	|5.7||Yes	|Yes	|Yes	|No|
+||8.0|Yes*	|Yes	|Yes	|Yes	|Yes|
+|Renaming a column	|5.7||Yes	|No	|Yes*	|Yes|
+||8.0|Yes*	|Yes	|No	|Yes*	|Yes|
+|Reordering columns	|5.7||Yes	|Yes	|Yes	|No|
+||8.0|No	|Yes	|Yes	|Yes	|No|
+|Setting a column default value	|5.7||Yes	|No	|Yes	|Yes|
+||8.0|Yes	|Yes	|No	|Yes	|Yes|
+|Changing the column data type	|5.7||No	|Yes	|No	|No|
+||8.0|No	|No	|Yes	|No	|No|
+|Extending VARCHAR column size	|5.7||Yes	|No	|Yes	|Yes|
+||8.0|No	|Yes	|No	|Yes	|Yes|
+|Dropping the column default value	|5.7||Yes	|No	|Yes	|Yes|
+||8.0|Yes	|Yes	|No	|Yes	|Yes|
+|Changing the auto-increment value	|5.7||Yes	|No	|Yes	|No*|
+||8.0|No	|Yes	|No	|Yes	|No*|
+|Making a column NULL	|5.7||Yes	|Yes*	|Yes	|No|
+||8.0|No	|Yes	|Yes*	|Yes	|No|
+|Making a column NOT NULL	|5.7||Yes*	|Yes*	|Yes	|No|
+||8.0|No	|Yes*	|Yes*	|Yes	|No|
+|Modifying the definition of an ENUM or SET column	|5.7||Yes	|No	|Yes	|Yes|
+||8.0|Yes	|Yes	|No	|Yes	|Yes|
 
 ## Table 14.13 Online DDL Support for Generated Column Operations
 
