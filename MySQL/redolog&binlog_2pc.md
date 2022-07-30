@@ -41,3 +41,28 @@ b. 否则，回滚事务。
 这里，时刻 B 发生 crash 对应的就是 2(a) 的情况，崩溃恢复过程中事务会被提交。
 
 ps: 两阶段提交的最后一个阶段的操作本身是不会失败的，除非是系统或硬件错误，所以也就不再需要回滚（不然就可以无限循环下去了）
+
+## sync_binlog
+
+|Command-Line Format	|--sync-binlog=#|
+|--|--|
+|System Variable	|sync_binlog|
+|Scope	|Global|
+|Dynamic	|Yes|
+|SET_VAR Hint Applies	|No|
+|Type	|Integer|
+|Default Value	|1|
+|Minimum Value	|0|
+|Maximum Value	|4294967295|
+
+Controls how often the MySQL server synchronizes the binary log to disk.
+
+sync_binlog=0: Disables synchronization of the binary log to disk by the MySQL server. Instead, the MySQL server relies on the operating system to flush the binary log to disk from time to time as it does for any other file. This setting provides the best performance, but in the event of a power failure or operating system crash, it is possible that the server has committed transactions that have not been synchronized to the binary log.
+
+sync_binlog=1: Enables synchronization of the binary log to disk before transactions are committed. This is the safest setting but can have a negative impact on performance due to the increased number of disk writes. In the event of a power failure or operating system crash, transactions that are missing from the binary log are only in a prepared state. This permits the automatic recovery routine to roll back the transactions, which guarantees that no transaction is lost from the binary log.
+
+sync_binlog=N, where N is a value other than 0 or 1: The binary log is synchronized to disk after N binary log commit groups have been collected. In the event of a power failure or operating system crash, it is possible that the server has committed transactions that have not been flushed to the binary log. This setting can have a negative impact on performance due to the increased number of disk writes. A higher value improves performance, but with an increased risk of data loss.
+
+For the greatest possible durability and consistency in a replication setup that uses InnoDB with transactions, use these settings:
+sync_binlog=1.
+innodb_flush_log_at_trx_commit=1.
