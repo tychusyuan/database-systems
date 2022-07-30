@@ -19,7 +19,7 @@
 ## Table 14.11 Online DDL Support for Primary Key Operations
 
 |Operation	|V|Instant|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
-|--|--|--|--|--|--|
+|--|--|--|--|--|--|--|
 |Adding a primary key	|5.7||Yes*	|Yes*	|Yes	|No|
 ||8.0	|No	|Yes*	|Yes*	|Yes	|No|
 |Dropping a primary key	|5.7||No	|Yes	|No	|No|
