@@ -64,5 +64,43 @@ sync_binlog=1: Enables synchronization of the binary log to disk before transact
 sync_binlog=N, where N is a value other than 0 or 1: The binary log is synchronized to disk after N binary log commit groups have been collected. In the event of a power failure or operating system crash, it is possible that the server has committed transactions that have not been flushed to the binary log. This setting can have a negative impact on performance due to the increased number of disk writes. A higher value improves performance, but with an increased risk of data loss.
 
 For the greatest possible durability and consistency in a replication setup that uses InnoDB with transactions, use these settings:
+
 sync_binlog=1.
+
 innodb_flush_log_at_trx_commit=1.
+
+## innodb_flush_log_at_trx_commit
+
+|Command-Line Format	|--innodb-flush-log-at-trx-commit=#|
+|--|--|
+|System Variable	|innodb_flush_log_at_trx_commit|
+|Scope	|Global|
+|Dynamic	|Yes|
+|SET_VAR Hint Applies	|No|
+|Type	|Enumeration|
+|Default Value	|1|
+|Valid Values	| 0|
+||1|
+||2|
+
+Controls the balance between strict ACID compliance for commit operations and higher performance that is possible when commit-related I/O operations are rearranged and done in batches. You can achieve better performance by changing the default value but then you can lose transactions in a crash.
+
+The default setting of 1 is required for full ACID compliance. Logs are written and flushed to disk at each transaction commit.
+
+With a setting of 0, logs are written and flushed to disk once per second. Transactions for which logs have not been flushed can be lost in a crash.
+
+With a setting of 2, logs are written after each transaction commit and flushed to disk once per second. Transactions for which logs have not been flushed can be lost in a crash.
+
+For settings 0 and 2, once-per-second flushing is not 100% guaranteed. Flushing may occur more frequently due to DDL changes and other internal InnoDB activities that cause logs to be flushed independently of the innodb_flush_log_at_trx_commit setting, and sometimes less frequently due to scheduling issues. If logs are flushed once per second, up to one second of transactions can be lost in a crash. If logs are flushed more or less frequently than once per second, the amount of transactions that can be lost varies accordingly.
+
+Log flushing frequency is controlled by innodb_flush_log_at_timeout, which allows you to set log flushing frequency to N seconds (where N is 1 ... 2700, with a default value of 1). However, any unexpected mysqld process exit can erase up to N seconds of transactions.
+
+DDL changes and other internal InnoDB activities flush the log independently of the innodb_flush_log_at_trx_commit setting.
+
+InnoDB crash recovery works regardless of the innodb_flush_log_at_trx_commit setting. Transactions are either applied entirely or erased entirely.
+
+For durability and consistency in a replication setup that uses InnoDB with transactions:
+
+If binary logging is enabled, set sync_binlog=1.
+
+Always set innodb_flush_log_at_trx_commit=1.
