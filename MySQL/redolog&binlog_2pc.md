@@ -104,3 +104,18 @@ For durability and consistency in a replication setup that uses InnoDB with tran
 If binary logging is enabled, set sync_binlog=1.
 
 Always set innodb_flush_log_at_trx_commit=1.
+
+## innodb_support_xa
+
+|Command-Line Format	|--innodb-support-xa=OFF/ON|
+|--|--|
+|Deprecated	|5.7.10|
+|System Variable	|innodb_support_xa|
+|Scope	|Global, Session|
+|Dynamic	|Yes|
+|Type	|Boolean|
+|Default Value	|ON|
+
+Enables InnoDB support for two-phase commit in XA transactions, causing an extra disk flush for transaction preparation. The XA mechanism is used internally and is essential for any server that has its binary log turned on and is accepting changes to its data from more than one thread. If you disable innodb_support_xa, transactions can be written to the binary log in a different order than the live database is committing them, which can produce different data when the binary log is replayed in disaster recovery or on a replica. Do not disable innodb_support_xa on a replication source server unless you have an unusual setup where only one thread is able to change data.
+
+innodb_support_xa is deprecated; expect it to be removed in a future MySQL release. InnoDB support for two-phase commit in XA transactions is always enabled as of MySQL 5.7.10. Disabling innodb_support_xa is no longer permitted as it makes replication unsafe and prevents performance gains associated with binary log group commit.
