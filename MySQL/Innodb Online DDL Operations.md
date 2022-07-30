@@ -1,8 +1,8 @@
 
 ## Table 14.10 Online DDL Support for Index Operations
 
-|Operation	|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
-|--|--|--|--|--|
+|Operation|	|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
+|--|--|--|--|--|--|
 |Creating or adding a secondary index|5.7	|Yes	|No	|Yes	|No|
 ||8.0	|No	|Yes	|No	|Yes	|No|
 |Dropping an index|5.7	|Yes	|No	|Yes	|Yes|
