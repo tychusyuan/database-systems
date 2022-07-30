@@ -73,21 +73,22 @@
 |--|--|--|--|--|
 |Enabling or disabling file-per-table tablespace encryption	|No	|Yes	|No	|No|
 
-Table 14.17 Online DDL Support for Partitioning Operations
+## Table 14.17 Online DDL Support for Partitioning Operations
 
-Partitioning Clause	In Place	Permits DML	Notes
-PARTITION BY	No	No	Permits ALGORITHM=COPY, LOCK={DEFAULT|SHARED|EXCLUSIVE}
-ADD PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST. Concurrent queries are permitted for tables partitioned by HASH or LIST. MySQL copies the data while holding a shared lock.
-DROP PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST.
-DISCARD PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT
-IMPORT PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT
-TRUNCATE PARTITION	Yes	Yes	Does not copy existing data. It merely deletes rows; it does not alter the definition of the table itself, or of any of its partitions.
-COALESCE PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by HASH or LIST, as MySQL copies the data while holding a shared lock.
-REORGANIZE PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.
-EXCHANGE PARTITION	Yes	Yes	
-ANALYZE PARTITION	Yes	Yes	
-CHECK PARTITION	Yes	Yes	
-OPTIMIZE PARTITION	No	No	ALGORITHM and LOCK clauses are ignored. Rebuilds the entire table. See Section 22.3.4, “Maintenance of Partitions”.
-REBUILD PARTITION	No	No	Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.
-REPAIR PARTITION	Yes	Yes	
-REMOVE PARTITIONING	No	No	Permits ALGORITHM=COPY, LOCK={DEFAULT|SHARED|EXCLUSIVE}
+|Partitioning Clause	|In Place	|Permits DML	|Notes|
+|--|--|--|--|
+|PARTITION BY	|No	|No	|Permits ALGORITHM=COPY, LOCK={DEFAULT|SHARED|EXCLUSIVE}|
+|ADD PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST. Concurrent queries are permitted for tables partitioned by HASH or LIST. MySQL copies the data while holding a shared lock.|
+|DROP PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Does not copy existing data for tables partitioned by RANGE or LIST.|
+|DISCARD PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT|
+|IMPORT PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT|
+|TRUNCATE PARTITION	|Yes	|Yes	|Does not copy existing data. It merely deletes rows; it does not alter the definition of the table itself, or of any of its partitions.|
+|COALESCE PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by HASH or LIST, as MySQL copies the data while holding a shared lock.|
+|REORGANIZE PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.|
+|EXCHANGE PARTITION	|Yes	|Yes	|
+|ANALYZE PARTITION	|Yes	|Yes	|
+|CHECK PARTITION	|Yes	|Yes	|
+|OPTIMIZE PARTITION	|No	|No	|ALGORITHM and LOCK clauses are ignored. Rebuilds the entire table. See Section 22.3.4, “Maintenance of Partitions”.|
+|REBUILD PARTITION	|No	|No	|Only permits ALGORITHM=DEFAULT, LOCK=DEFAULT. Concurrent queries are permitted for tables partitioned by LINEAR HASH or LIST. MySQL copies data from affected partitions while holding a shared metadata lock.|
+|REPAIR PARTITION	|Yes	|Yes	|
+|REMOVE PARTITIONING	|No	|No	|Permits ALGORITHM=COPY, LOCK={DEFAULT|SHARED|EXCLUSIVE}|
