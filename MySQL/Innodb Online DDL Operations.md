@@ -14,7 +14,7 @@
 |Adding a SPATIAL index|5.7	|No|Yes	|No	|No	|No|
 ||8.0	|No	|Yes	|No	|No	|No|
 |Changing the index type|5.7	|No|Yes	|No	|Yes	|Yes|
-||8.0	|Yes	|Yes	|No	|Yes	Yes|
+||8.0	|Yes	|Yes	|No	|Yes	|Yes|
 
 ## Table 14.11 Online DDL Support for Primary Key Operations
 
