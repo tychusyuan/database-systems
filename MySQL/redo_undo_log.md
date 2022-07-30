@@ -62,9 +62,9 @@ Checkpoint age        169026024
 首先，REDO的维护增加了一份写盘数据，同时为了保证数据正确，事务只有在他的REDO全部落盘才能返回用户成功，REDO的写盘时间会直接影响系统吞吐，显而易见，REDO的数据量要尽量少。其次，系统崩溃总是发生在始料未及的时候，当重启重放REDO时，系统并不知道哪些REDO对应的Page已经落盘，因此REDO的重放必须可重入，即REDO操作要保证幂等。最后，为了便于通过并发重放的方式加快重启恢复速度，REDO应该是基于Page的，即一个REDO只涉及一个Page的修改。
 
 熟悉的读者会发现，数据量小是Logical Logging的优点，而幂等以及基于Page正是Physical Logging的优点，因此InnoDB采取了一种称为Physiological Logging的方式，来兼得二者的优势。所谓Physiological Logging，就是以Page为单位，但在Page内以逻辑的方式记录。举个例子，MLOG_REC_UPDATE_IN_PLACE类型的REDO中记录了对Page中一个Record的修改，方法如下：
-
+```
 （Page ID，Record Offset，(Filed 1, Value 1) … (Filed i, Value i) … )
-
+```
 其中，PageID指定要操作的Page页，Record Offset记录了Record在Page内的偏移位置，后面的Field数组，记录了需要修改的Field以及修改后的Value。
 
 由于Physiological Logging的方式采用了物理Page中的逻辑记法，导致两个问题：
@@ -158,6 +158,71 @@ REDO产生
 const sn_t start_sn = log.sn.fetch_add(len);
 写入Page Cache
 写入到Log Buffer中的REDO数据需要进一步写入操作系统的Page Cache，InnoDB中有单独的log_writer来做这件事情。这里有个问题，由于Log Buffer中的数据是不同mtr并发写入的，这个过程中Log Buffer中是有空洞的，因此log_writer需要感知当前Log Buffer中连续日志的末尾，将连续日志通过pwrite系统调用写入操作系统Page Cache。整个过程中应尽可能不影响后续mtr进行数据拷贝，InnoDB在这里引入一个叫做link_buf的数据结构，如下图所示：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/link_buf.png)
+
+link_buf是一个循环使用的数组，对每个lsn取模可以得到其在link_buf上的一个槽位，在这个槽位中记录REDO长度。另外一个线程从开始遍历这个link_buf，通过槽位中的长度可以找到这条REDO的结尾位置，一直遍历到下一位置为0的位置，可以认为之后的REDO有空洞，而之前已经连续，这个位置叫做link_buf的tail。下面看看log_writer和众多mtr是如何利用这个link_buf数据结构的。这里的这个link_buf为log.recent_written，如下图所示：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/link_buf2.png)
+
+图中上半部分是REDO日志示意图，write_lsn是当前log_writer已经写入到Page Cache中日志末尾，current_lsn是当前已经分配给mtr的的最大lsn位置，而buf_ready_for_write_lsn是当前log_writer找到的Log Buffer中已经连续的日志结尾，从write_lsn到buf_ready_for_write_lsn是下一次log_writer可以连续调用pwrite写入Page Cache的范围，而从buf_ready_for_write_lsn到current_lsn是当前mtr正在并发写Log Buffer的范围。下面的连续方格便是log.recent_written的数据结构，可以看出由于中间的两个全零的空洞导致buf_ready_for_write_lsn无法继续推进，接下来，假如reserve到中间第一个空洞的mtr也完成了写Log Buffer，并更新了log.recent_written*，如下图：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/redo-next-write-to-log-buffer.png)
+
+这时，log_writer从当前的buf_ready_for_write_lsn向后遍历log.recent_written，发现这段已经连续：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/redo-next-write-to-log-buffer-2.png)
+
+因此提升当前的buf_ready_for_write_lsn，并将log.recent_written的tail位置向前滑动，之后的位置清零，供之后循环复用：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/redo-next-write-to-log-buffer-3.png)
+
+紧接log_writer将连续的内容刷盘并提升write_lsn。
+
+刷盘
+log_writer提升write_lsn之后会通知log_flusher线程，log_flusher线程会调用fsync将REDO刷盘，至此完成了REDO完整的写入过程。
+
+唤醒用户线程
+为了保证数据正确，只有REDO写完后事务才可以commit，因此在REDO写入的过程中，大量的用户线程会block等待，直到自己的最后一条日志结束写入。默认情况下innodb_flush_log_at_trx_commit = 1，需要等REDO完成刷盘，这也是最安全的方式。当然，也可以通过设置innodb_flush_log_at_trx_commit = 2，这样，只要REDO写入Page Cache就认为完成了写入，极端情况下，掉电可能导致数据丢失。
+
+大量的用户线程调用log_write_up_to等待在自己的lsn位置，为了避免大量无效的唤醒，InnoDB将阻塞的条件变量拆分为多个，log_write_up_to根据自己需要等待的lsn所在的block取模对应到不同的条件变量上去。同时，为了避免大量的唤醒工作影响log_writer或log_flusher线程，InnoDB中引入了两个专门负责唤醒用户的线程：log_wirte_notifier和log_flush_notifier，当超过一个条件变量需要被唤醒时，log_writer和log_flusher会通知这两个线程完成唤醒工作。下图是整个过程的示意图：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/innodb_notify.png)
+
+多个线程通过一些内部数据结构的辅助，完成了高效的从REDO产生，到REDO写盘，再到唤醒用户线程的流程，下面是整个这个过程的时序图：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/log_sequence.png)
+
+6. 如何安全地清除REDO
+由于REDO文件空间有限，同时为了尽量减少恢复时需要重放的REDO，InnoDB引入log_checkpointer线程周期性的打Checkpoint。重启恢复的时候，只需要从最新的Checkpoint开始回放后边的REDO，因此Checkpoint之前的REDO就可以删除或被复用。
+
+我们知道REDO的作用是避免只写了内存的数据由于故障丢失，那么打Checkpiont的位置就必须保证之前所有REDO所产生的内存脏页都已经刷盘。最直接的，可以从Buffer Pool中获得当前所有脏页对应的最小REDO LSN：lwm_lsn。 但光有这个还不够，因为有一部分min-transaction的REDO对应的Page还没有来的及加入到Buffer Pool的脏页中去，如果checkpoint打到这些REDO的后边，一旦这时发生故障恢复，这部分数据将丢失，因此还需要知道当前已经加入到Buffer Pool的REDO lsn位置：dpa_lsn。取二者的较小值作为最终checkpoint的位置，其核心逻辑如下：
+
+/* LWM lsn for unflushed dirty pages in Buffer Pool */
+lsn_t lwm_lsn = buf_pool_get_oldest_modification_lwm();
+
+/* Note lsn up to which all dirty pages have already been added into Buffer Pool */
+const lsn_t dpa_lsn = log_buffer_dirty_pages_added_up_to_lsn(log);
+
+lsn_t checkpoint_lsn = std::min(lwm_lsn, dpa_lsn);
+MySQL 8.0中为了能够让mtr之间更大程度的并发，允许并发地给Buffer Pool注册脏页。类似与log.recent_written和log_writer，这里引入一个叫做recent_closed的link_buf来处理并发带来的空洞，由单独的线程log_closer来提升recent_closed的tail，也就是当前连续加入Buffer Pool脏页的最大LSN，这个值也就是上面提到的dpa_lsn。需要注意的是，由于这种乱序的存在，lwm_lsn的值并不能简单的获取当前Buffer Pool中的最老的脏页的LSN，保守起见，还需要减掉一个recent_closed的容量大小，也就是最大的乱序范围，简化后的代码如下：
+
+/* LWM lsn for unflushed dirty pages in Buffer Pool */
+const lsn_t lsn = buf_pool_get_oldest_modification_approx();
+const lsn_t lag = log.recent_closed.capacity();
+lsn_t lwm_lsn = lsn - lag;
+
+/* Note lsn up to which all dirty pages have already been added into Buffer Pool */
+const lsn_t dpa_lsn = log_buffer_dirty_pages_added_up_to_lsn(log);
+
+lsn_t checkpoint_lsn = std::min(lwm_lsn, dpa_lsn);
+这里有一个问题，由于lwm_lsn已经减去了recent_closed的capacity，因此理论上这个值一定是小于dpa_lsn的。那么再去比较lwm_lsn和dpa_lsn来获取Checkpoint位置或许是没有意义的。
+
+上面已经提到，ib_logfile0文件的前三个Block有两个被预留作为Checkpoint Block，这两个Block会在打Checkpiont的时候交替使用，这样来避免写Checkpoint过程中的崩溃导致没有可用的Checkpoint。Checkpoint Block中的内容如下：
+
+![RUNOOB 图标](https://github.com/tychusyuan/database-systems/raw/main/MySQL/img/log_checkpoint.png)
+
+首先8个字节的Checkpoint Number，通过比较这个值可以判断哪个是最新的Checkpiont记录，之后8字节的Checkpoint LSN为打Checkpoint的REDO位置，恢复时会从这个位置开始重放后边的REDO。之后8个字节的Checkpoint Offset，将Checkpoint LSN与文件空间的偏移对应起来。最后8字节是前面提到的Log Buffer的长度，这个值目前在恢复过程并没有使用。
 
 ## redo log 涉及参数
 
