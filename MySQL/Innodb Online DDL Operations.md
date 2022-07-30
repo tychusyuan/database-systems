@@ -3,18 +3,18 @@
 
 |Operation	|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
 |--|--|--|--|--|
-|Creating or adding a secondary index	|Yes	|No	|Yes	|No|
-|8.0	|No	|Yes	|No	|Yes	|No|
-|Dropping an index	|Yes	|No	|Yes	|Yes|
-|8.0	|No	|Yes	|No	|Yes	|Yes|
-|Renaming an index	|Yes	|No	|Yes	|Yes|
-|8.0	|No	|Yes	|No	|Yes	|Yes|
-|Adding a FULLTEXT index	|Yes*	|No*	|No	|No|
-|8.0	|No	|Yes*	|No*	|No	|No|
-|Adding a SPATIAL index	|Yes	|No	|No	|No|
-|8.0	|No	|Yes	|No	|No	|No|
-|Changing the index type	|Yes	|No	|Yes	|Yes|
-|8.0	|Yes	|Yes	|No	|Yes	Yes|
+|Creating or adding a secondary index|5.7	|Yes	|No	|Yes	|No|
+||8.0	|No	|Yes	|No	|Yes	|No|
+|Dropping an index|5.7	|Yes	|No	|Yes	|Yes|
+||8.0	|No	|Yes	|No	|Yes	|Yes|
+|Renaming an index|5.7	|Yes	|No	|Yes	|Yes|
+||8.0	|No	|Yes	|No	|Yes	|Yes|
+|Adding a FULLTEXT index|5.7	|Yes*	|No*	|No	|No|
+||8.0	|No	|Yes*	|No*	|No	|No|
+|Adding a SPATIAL index|5.7	|Yes	|No	|No	|No|
+||8.0	|No	|Yes	|No	|No	|No|
+|Changing the index type|5.7	|Yes	|No	|Yes	|Yes|
+||8.0	|Yes	|Yes	|No	|Yes	Yes|
 
 ## Table 14.11 Online DDL Support for Primary Key Operations
 
