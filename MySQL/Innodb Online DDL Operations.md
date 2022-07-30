@@ -62,15 +62,16 @@
 |Setting persistent table statistics	|Yes	|No	|Yes	|Yes|
 |Specifying a character set	|Yes	|Yes*	|No	|No|
 |Converting a character set	|No	|Yes*	|No	|No|
-|Optimizing a table	|Yes*	Yes	Yes	No|
+|Optimizing a table	|Yes*	|Yes	|Yes	|No|
 |Rebuilding with the FORCE option	|Yes*	|Yes	|Yes	|No|
 |Performing a null rebuild	|Yes*	|Yes	|Yes	|No|
 |Renaming a table	|Yes	|No	|Yes	|Yes|
 
-Table 14.16 Online DDL Support for Tablespace Operations
+## Table 14.16 Online DDL Support for Tablespace Operations
 
-Operation	In Place	Rebuilds Table	Permits Concurrent DML	Only Modifies Metadata
-Enabling or disabling file-per-table tablespace encryption	No	Yes	No	No
+|Operation	|In Place	|Rebuilds Table	|Permits Concurrent DML	|Only Modifies Metadata|
+|--|--|--|--|--|
+|Enabling or disabling file-per-table tablespace encryption	|No	|Yes	|No	|No|
 
 Table 14.17 Online DDL Support for Partitioning Operations
 
