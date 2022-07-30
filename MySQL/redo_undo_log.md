@@ -197,7 +197,7 @@ log_writer提升write_lsn之后会通知log_flusher线程，log_flusher线程会
 由于REDO文件空间有限，同时为了尽量减少恢复时需要重放的REDO，InnoDB引入log_checkpointer线程周期性的打Checkpoint。重启恢复的时候，只需要从最新的Checkpoint开始回放后边的REDO，因此Checkpoint之前的REDO就可以删除或被复用。
 
 我们知道REDO的作用是避免只写了内存的数据由于故障丢失，那么打Checkpiont的位置就必须保证之前所有REDO所产生的内存脏页都已经刷盘。最直接的，可以从Buffer Pool中获得当前所有脏页对应的最小REDO LSN：lwm_lsn。 但光有这个还不够，因为有一部分min-transaction的REDO对应的Page还没有来的及加入到Buffer Pool的脏页中去，如果checkpoint打到这些REDO的后边，一旦这时发生故障恢复，这部分数据将丢失，因此还需要知道当前已经加入到Buffer Pool的REDO lsn位置：dpa_lsn。取二者的较小值作为最终checkpoint的位置，其核心逻辑如下：
-
+```
 /* LWM lsn for unflushed dirty pages in Buffer Pool */
 lsn_t lwm_lsn = buf_pool_get_oldest_modification_lwm();
 
@@ -205,8 +205,9 @@ lsn_t lwm_lsn = buf_pool_get_oldest_modification_lwm();
 const lsn_t dpa_lsn = log_buffer_dirty_pages_added_up_to_lsn(log);
 
 lsn_t checkpoint_lsn = std::min(lwm_lsn, dpa_lsn);
+```
 MySQL 8.0中为了能够让mtr之间更大程度的并发，允许并发地给Buffer Pool注册脏页。类似与log.recent_written和log_writer，这里引入一个叫做recent_closed的link_buf来处理并发带来的空洞，由单独的线程log_closer来提升recent_closed的tail，也就是当前连续加入Buffer Pool脏页的最大LSN，这个值也就是上面提到的dpa_lsn。需要注意的是，由于这种乱序的存在，lwm_lsn的值并不能简单的获取当前Buffer Pool中的最老的脏页的LSN，保守起见，还需要减掉一个recent_closed的容量大小，也就是最大的乱序范围，简化后的代码如下：
-
+```
 /* LWM lsn for unflushed dirty pages in Buffer Pool */
 const lsn_t lsn = buf_pool_get_oldest_modification_approx();
 const lsn_t lag = log.recent_closed.capacity();
@@ -216,6 +217,7 @@ lsn_t lwm_lsn = lsn - lag;
 const lsn_t dpa_lsn = log_buffer_dirty_pages_added_up_to_lsn(log);
 
 lsn_t checkpoint_lsn = std::min(lwm_lsn, dpa_lsn);
+```
 这里有一个问题，由于lwm_lsn已经减去了recent_closed的capacity，因此理论上这个值一定是小于dpa_lsn的。那么再去比较lwm_lsn和dpa_lsn来获取Checkpoint位置或许是没有意义的。
 
 上面已经提到，ib_logfile0文件的前三个Block有两个被预留作为Checkpoint Block，这两个Block会在打Checkpiont的时候交替使用，这样来避免写Checkpoint过程中的崩溃导致没有可用的Checkpoint。Checkpoint Block中的内容如下：
