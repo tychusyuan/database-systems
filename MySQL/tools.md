@@ -47,6 +47,7 @@ select concat('kill ',b.trx_mysql_thread_id,';') from information_schema.innodb_
 watch 'cat select_kill | mysql -h localhost -P3308 -u root -p password -A -N | grep kill > kill ; cat kill ; cat kill | mysql -h localhost -P3308 -u root -p password -A
 ```
 
+### sql 会话内kill
 ```sql
 set @sql_kill=''; select @sql_kill:=concat('kill ',b.trx_mysql_thread_id,';') from information_schema.innodb_lock_waits as a inner join information_schema.innodb_trx as b on b.trx_id = a.blocking_trx_id inner join information_schema.innodb_trx as c on c.trx_id = a.requesting_trx_id; PREPARE stmt FROM @sql_kill ; EXECUTE stmt; deallocate prepare stmt;
 ```
