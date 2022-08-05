@@ -38,3 +38,15 @@ SELECT * FROM mysql.innodb_table_stats order by last_update desc limit 50;
 pt-query-digest --explain localhost -P3306 -uadmin -ppassword --type slowlog --limit 100% --order-by Query_time:sum --since '2022-06-28 00:00:00' --until '2022-06-28 00:30:00' slow.log > slow_query.txt
 
 ```
+
+### 锁等待 , 杀掉阻塞的 thread
+```sql
+select concat('kill ',b.trx_mysql_thread_id,';') from information_schema.innodb_lock_waits as a inner join information_schema.innodb_trx as b on b.trx_id = a.blocking_trx_id inner join information_schema.innodb_trx as c on c.trx_id = a.requesting_trx_id;
+```
+```shell
+watch 'cat select_kill | mysql -h localhost -P3308 -u root -p password -A -N | grep kill > kill ; cat kill ; cat kill | mysql -h localhost -P3308 -u root -p password -A
+```
+
+```sql
+set @sql_kill=''; select @sql_kill:=concat('kill ',b.trx_mysql_thread_id,';') from information_schema.innodb_lock_waits as a inner join information_schema.innodb_trx as b on b.trx_id = a.blocking_trx_id inner join information_schema.innodb_trx as c on c.trx_id = a.requesting_trx_id; PREPARE stmt FROM @sql_kill ; EXECUTE stmt; deallocate prepare stmt;
+```
