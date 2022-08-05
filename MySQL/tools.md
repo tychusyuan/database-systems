@@ -51,4 +51,13 @@ watch 'cat select_kill | mysql -h localhost -P3308 -u root -p password -A -N | g
 ```sql
 set @sql_kill=''; select @sql_kill:=concat('kill ',b.trx_mysql_thread_id,';') from information_schema.innodb_lock_waits as a inner join information_schema.innodb_trx as b on b.trx_id = a.blocking_trx_id inner join information_schema.innodb_trx as c on c.trx_id = a.requesting_trx_id; PREPARE stmt FROM @sql_kill ; EXECUTE stmt; deallocate prepare stmt;
 ```
-
+```sql
+PURGE { BINARY | MASTER } LOGS {
+    TO 'log_name'
+  | BEFORE datetime_expr
+}
+```
+```sql
+PURGE BINARY LOGS TO 'mysql-bin.010';
+PURGE BINARY LOGS BEFORE '2019-04-02 22:46:26';
+```
