@@ -6,6 +6,9 @@ socket=/tmp/mysql.sock
 port=3306
 socket=/tmp/mysql.sock
 
+back_log  = 1024      # system limit or 50 + (max_connections / 5)
+
+
 max_allowed_packet=128M
 
 [mysqldump]
