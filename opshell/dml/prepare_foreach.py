@@ -1,5 +1,6 @@
 import pymysql.cursors
 import time
+from datetime import datetime
 
 mysql_dsn = {
 "host":"127.0.0.1",
@@ -9,12 +10,12 @@ mysql_dsn = {
 "db":"db_test",
 }
 
-chunk_size = 100
+chunk_size = 200
 
 sql_dir = [
 {"pk":"id",
 "s_sql":"select a.`id` from table_a a left join table_b b on a.package_name_hash = b.package_name_hash left join table_c c on b.package_name_hash = c.package_name_hash where a.status in (304, 4) and c.package_name is null;",
-"e_sql":"update table_a a left join table_b b on a.package_name_hash = b.package_name_hash left join table_c c on b.package_name_hash = c.package_name_hash set a.status = b.status, a.update_time = 1660123067467 where a.`id` = %s"},
+"e_sql":"update table_a a left join table_b b on a.package_name_hash = b.package_name_hash left join audit_app_info c on b.package_name_hash = c.package_name_hash set a.status = b.status, a.update_time = 1660123067467 where a.`id` = %s"},
 {"pk":"id",
 "s_sql":"select a.`id` from table_a a left join table_b b on a.package_name_hash = b.package_name_hash where a.status in (2, 301, 302, 201) and b.package_name is null;",
 "e_sql":"update table_a a set a.status = 1,a.update_time = 1660123067467 where a.id = %s"},
@@ -47,7 +48,7 @@ def sql_foreach(t,conn):
                 conn.rollback()
                 exit(0)
             else:
-                print(t["e_sql"],row_result,idx,result_len)
+                print(datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'),t["e_sql"],row_result,idx,result_len)
                 conn.commit()
 
 if __name__ == "__main__":
