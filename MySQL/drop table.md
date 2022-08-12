@@ -8,3 +8,17 @@
 ```shell
 sudo ln test.idb test.idb.hdlk
 ```
+
+### 使用truncate时，SIZE参数必须是整数和可选单位（例如：10K是10*1024）。使用的单位是K、M、G、T、P、E、Z、Y（1024的幂）或KB、MB、…（1000的幂）。
+```shell
+touch file.txt
+```
+```shell
+truncate -s 100K file.txt
+```
+```shell
+truncate -s +200K file.txt
+```
+```shell
+truncate -s -250K file.txt
+```
