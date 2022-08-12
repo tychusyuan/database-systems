@@ -83,14 +83,12 @@ if __name__ == "__main__":
                              port=mysql_source["port"],
                              user=mysql_source["user"],
                              password=mysql_source["pwd"],
-                             autocommit=False,
                              cursorclass=pymysql.cursors.DictCursor)
 
     conn_dest = pymysql.connect(host=mysql_dest["host"],
                              port=mysql_dest["port"],
                              user=mysql_dest["user"],
                              password=mysql_dest["pwd"],
-                             autocommit=False,
                              cursorclass=pymysql.cursors.DictCursor)
     f = None
     p = None
