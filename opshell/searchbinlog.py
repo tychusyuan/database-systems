@@ -26,6 +26,8 @@ def source_binlog(conn):
         p=master_status["Position"]
         print(f,p)
         time.sleep(10)
+        # cursor.execute("stop slave;")
+        # 
         cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s",(f,p))
         binlog_events=cursor.fetchall()
         for row in binlog_events:
