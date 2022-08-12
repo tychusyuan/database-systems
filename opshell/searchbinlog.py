@@ -30,7 +30,7 @@ def source_binlog(conn):
         print(f,p)
         time.sleep(10)
         # cursor.execute("stop slave;")
-        # 
+        # time.sleep(2)
         cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s",(f,p))
         binlog_events=cursor.fetchall()
         for row in binlog_events:
