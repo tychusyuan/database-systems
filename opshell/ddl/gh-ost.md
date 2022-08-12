@@ -6,7 +6,7 @@
 
 ###
 ```shell
-./gh-ost --host=127.0.0.1 --port=3306 --user=sbtest --password=sbtest --database=sbtest1 --table=sbtest1 --alter="ENGINE=InnoDB" --chunk-size=2000 --max-load=Threads_connected=20 --test-on-replica --execute
+./gh-ost -allow-on-master -assume-rbr -exact-rowcount -host 127.0.0.1 -port 3306 -user root -ask-pass --database=sbtest --table=sbtest1 --alter="ENGINE=InnoDB" --chunk-size=2000 --max-load=Threads_connected=2000 --execute
 ```
 
 ###
