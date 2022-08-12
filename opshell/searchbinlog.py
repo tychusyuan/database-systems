@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 import hashlib
 
+# 集群未使用 gtid的情况下
 # 停掉 db03 的主从复制，挂到db02后面，实现串烧
 
 mysql_source={
