@@ -51,6 +51,7 @@ def source_binlog(conn):
         binlog_events=cursor.fetchall()
         for row in binlog_events:
             hexadecimal = hashlib.md5(bytes(row['Event_type']+str(row['Server_id'])+row['Info'],'utf-8')).hexdigest()
+            print("hex",hexadecimal,"Log_name",row['Log_name'],"Server_id",row['Server_id'],"Pos",row['Pos'],"End_log_pos",row['End_log_pos'],"Event_type",row['Event_type'])
             p= int(row['End_log_pos'])
             lst.append(hexadecimal)
         #    print(row,hexadecimal)
@@ -106,8 +107,8 @@ def dest_binlog(conn,fil,pos,lst):
                 if len(binlog_events) < l:
                     return f, p, False
                 for i in range(l):
-                    print(binlog_events[i])
                     event_h = hashlib.md5(bytes(binlog_events[i]['Event_type']+str(binlog_events[i]['Server_id'])+binlog_events[i]['Info'],'utf-8')).hexdigest()
+                    print("hex",event_h,"Log_name",binlog_events[i]['Log_name'],"Server_id",binlog_events[i]['Server_id'],"Pos",binlog_events[i]['Pos'],"End_log_pos",binlog_events[i]['End_log_pos'],"Event_type",binlog_events[i]['Event_type'])
                     p=int(binlog_events[i]['End_log_pos'])
                     #print(binlog_events[i],event_h)
                     if event_h == lst[i]:
