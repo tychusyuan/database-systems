@@ -25,6 +25,7 @@ replica={
 def source_binlog(conn):
     lst=[]
     with conn.cursor() as cursor:
+        # 预取 binlog file 和pos，取出这个pos开始到sql_thread结束之后的所有 binlog event
         cursor.execute("show master status;")
         master_status=cursor.fetchone()
         f=master_status["File"]
@@ -39,6 +40,7 @@ def source_binlog(conn):
         cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s",(f,p))
         binlog_events=cursor.fetchall()
         for row in binlog_events:
+            # checksum
             hexadecimal = hashlib.md5(bytes(row['Event_type']+str(row['Server_id'])+row['Info'],'utf-8')).hexdigest()
             p= int(row['End_log_pos'])
             lst.append(hexadecimal)
@@ -71,6 +73,7 @@ def dest_binlog(conn,fil,pos,lst):
         return
     with conn.cursor() as cursor:
         while True:
+            # 从预取 file和pos 位置开始向后 逐一检查 binlog event，遇到checksum相同的之后，正组比较checksum
             cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s LIMIT 1",(f,p))
             row=cursor.fetchone()
             hexadecimal = hashlib.md5(bytes(row['Event_type']+str(row['Server_id'])+row['Info'],'utf-8')).hexdigest()
@@ -85,8 +88,10 @@ def dest_binlog(conn,fil,pos,lst):
                     if event_h == lst[i]:
                         fix = fix+1
                 if fix == l:
+                    # 全组都相同，则匹配到file 和 pos
                     break
             else:
+                # next
                 p=int(row['End_log_pos'])
             
         print(f,p)
