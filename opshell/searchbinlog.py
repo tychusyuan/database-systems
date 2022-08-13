@@ -109,16 +109,20 @@ if __name__ == "__main__":
     f = None
     p = None
     with conn_dest :
+        # 预取 目标实例 binlog file 和 pos
         dest_result = dest_master_status(conn_dest)
         f = dest_result["File"]
         p = dest_result["Position"]
 
     lst = None
     with conn_source :
+        # 迁移实例 最后一组 binlog event
         lst = source_binlog(conn_source)
     print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     with conn_dest :
+        # 目标实例binlog event对比迁移实例最后一组 event，找到对应的file 和 pos
         f,p = dest_binlog(conn_dest,f,p,lst)
 
     with conn_source :
+        # change master
        source_change(conn_source,mysql_dest["host"],mysql_dest["port"],replica["user"],replica["pwd"],f,p) 
