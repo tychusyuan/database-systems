@@ -3,20 +3,22 @@ import time
 from datetime import datetime
 import hashlib
 
-# 集群未使用 gtid的情况下
-# 停掉 db03 的主从复制，挂到db02后面，实现A-B-C级联复制
-
 mysql_source={
-"host":"db03",
+"host":"10.0.0.103",
 "port":3306,
 "user":"root",
 "pwd":"password",
 }
 
 mysql_dest={
-"host":"db02",
+"host":"10.0.0.102",
 "port":3306,
 "user":"root",
+"pwd":"password",
+}
+
+replica={
+"user":"sync_user",
 "pwd":"password",
 }
 
@@ -28,9 +30,12 @@ def source_binlog(conn):
         f=master_status["File"]
         p=master_status["Position"]
         print(f,p)
-        time.sleep(10)
-        # cursor.execute("stop slave;")
-        # time.sleep(2)
+        time.sleep(8)
+        print("STOP SLAVE IO_THREAD;")
+        #cursor.execute("STOP SLAVE IO_THREAD;")
+        #time.sleep(2)
+        print("STOP SLAVE SQL_THREAD;")
+        #cursor.execute("STOP SLAVE SQL_THREAD;")
         cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s",(f,p))
         binlog_events=cursor.fetchall()
         for row in binlog_events:
@@ -40,6 +45,14 @@ def source_binlog(conn):
         #    print(row,hexadecimal)
         print(f,p)
     return lst
+
+def source_change(conn,host,port,user,pwd,fil,pos):
+        with conn.cursor() as cursor:
+            sql = "CHANGE MASTER TO MASTER_HOST='%s',MASTER_PORT=%s,MASTER_USER='%s',MASTER_PASSWORD='%s',MASTER_LOG_FILE='%s', MASTER_LOG_POS=%s;" % (
+                host,port,user,pwd,fil,pos
+            )
+            print(sql)
+            #cursor.execute(sql)
 
 def dest_master_status(conn):
     result=None
@@ -77,18 +90,21 @@ def dest_binlog(conn,fil,pos,lst):
                 p=int(row['End_log_pos'])
             
         print(f,p)
+    return fil, pos
 
 if __name__ == "__main__":
     conn_source = pymysql.connect(host=mysql_source["host"],
                              port=mysql_source["port"],
                              user=mysql_source["user"],
                              password=mysql_source["pwd"],
+                             autocommit=False,
                              cursorclass=pymysql.cursors.DictCursor)
 
     conn_dest = pymysql.connect(host=mysql_dest["host"],
                              port=mysql_dest["port"],
                              user=mysql_dest["user"],
                              password=mysql_dest["pwd"],
+                             autocommit=False,
                              cursorclass=pymysql.cursors.DictCursor)
     f = None
     p = None
@@ -102,4 +118,7 @@ if __name__ == "__main__":
         lst = source_binlog(conn_source)
     print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
     with conn_dest :
-        dest_binlog(conn_dest,f,p,lst)
+        f,p = dest_binlog(conn_dest,f,p,lst)
+
+    with conn_source :
+       source_change(conn_source,mysql_dest["host"],mysql_dest["port"],replica["user"],replica["pwd"],f,p) 
