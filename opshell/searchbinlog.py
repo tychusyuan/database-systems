@@ -3,6 +3,9 @@ import time
 from datetime import datetime
 import hashlib
 
+#execute = True
+execute = False
+
 mysql_source={
 "host":"10.0.0.103",
 "port":3306,
@@ -32,15 +35,21 @@ def source_binlog(conn):
         p=master_status["Position"]
         print(f,p)
         time.sleep(8)
-        print("STOP SLAVE IO_THREAD;")
-        #cursor.execute("STOP SLAVE IO_THREAD;")
-        #time.sleep(2)
-        print("STOP SLAVE SQL_THREAD;")
-        #cursor.execute("STOP SLAVE SQL_THREAD;")
+        if execute:
+            print("STOP SLAVE IO_THREAD; execute")
+            cursor.execute("STOP SLAVE IO_THREAD;")
+        else:
+            print("STOP SLAVE IO_THREAD; test")
+        time.sleep(2)
+
+        if execute:
+            print("STOP SLAVE SQL_THREAD; execute")
+            cursor.execute("STOP SLAVE SQL_THREAD;")
+        else:
+            print("STOP SLAVE SQL_THREAD; test")
         cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s",(f,p))
         binlog_events=cursor.fetchall()
         for row in binlog_events:
-            # checksum
             hexadecimal = hashlib.md5(bytes(row['Event_type']+str(row['Server_id'])+row['Info'],'utf-8')).hexdigest()
             p= int(row['End_log_pos'])
             lst.append(hexadecimal)
@@ -53,8 +62,11 @@ def source_change(conn,host,port,user,pwd,fil,pos):
             sql = "CHANGE MASTER TO MASTER_HOST='%s',MASTER_PORT=%s,MASTER_USER='%s',MASTER_PASSWORD='%s',MASTER_LOG_FILE='%s', MASTER_LOG_POS=%s;" % (
                 host,port,user,pwd,fil,pos
             )
-            print(sql)
-            #cursor.execute(sql)
+            if execute:
+                print(sql,"execute")
+                cursor.execute(sql)
+            else:
+                print(sql,"test")
 
 def dest_master_status(conn):
     result=None
@@ -91,13 +103,13 @@ def dest_binlog(conn,fil,pos,lst):
                     # 全组都相同，则匹配到file 和 pos
                     break
             else:
-                # next
                 p=int(row['End_log_pos'])
             
         print(f,p)
     return fil, pos
 
 if __name__ == "__main__":
+    print("execute =",execute)
     conn_source = pymysql.connect(host=mysql_source["host"],
                              port=mysql_source["port"],
                              user=mysql_source["user"],
