@@ -57,6 +57,14 @@ def source_binlog(conn):
         print(f,p)
     return lst
 
+def source_slave_start(conn):
+    with conn.cursor() as cursor:
+        if execute:
+            print("start slave; execute")
+            cursor.execute("start slave;")
+        else:
+            print("start slave; test")
+
 def source_change(conn,host,port,user,pwd,fil,pos):
         with conn.cursor() as cursor:
             sql = "CHANGE MASTER TO MASTER_HOST='%s',MASTER_PORT=%s,MASTER_USER='%s',MASTER_PASSWORD='%s',MASTER_LOG_FILE='%s', MASTER_LOG_POS=%s;" % (
@@ -88,12 +96,17 @@ def dest_binlog(conn,fil,pos,lst):
             # 从预取 file和pos 位置开始向后 逐一检查 binlog event，遇到checksum相同的之后，正组比较checksum
             cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s LIMIT 1",(f,p))
             row=cursor.fetchone()
+            if row == None:
+                continue
             hexadecimal = hashlib.md5(bytes(row['Event_type']+str(row['Server_id'])+row['Info'],'utf-8')).hexdigest()
             if hexadecimal == lst[0]:
                 fix = 0
                 cursor.execute("SHOW BINLOG EVENTS IN %s FROM %s LIMIT %s",(f,p,l))
                 binlog_events=cursor.fetchall()
+                if len(binlog_events) < l:
+                    return f, p, False
                 for i in range(l):
+                    print(binlog_events[i])
                     event_h = hashlib.md5(bytes(binlog_events[i]['Event_type']+str(binlog_events[i]['Server_id'])+binlog_events[i]['Info'],'utf-8')).hexdigest()
                     p=int(binlog_events[i]['End_log_pos'])
                     #print(binlog_events[i],event_h)
@@ -106,7 +119,7 @@ def dest_binlog(conn,fil,pos,lst):
                 p=int(row['End_log_pos'])
             
         print(f,p)
-    return fil, pos
+    return f, p, True
 
 if __name__ == "__main__":
     print("execute =",execute)
@@ -123,23 +136,28 @@ if __name__ == "__main__":
                              password=mysql_dest["pwd"],
                              autocommit=False,
                              cursorclass=pymysql.cursors.DictCursor)
-    f = None
-    p = None
-    with conn_dest :
-        # 预取 目标实例 binlog file 和 pos
-        dest_result = dest_master_status(conn_dest)
-        f = dest_result["File"]
-        p = dest_result["Position"]
-
-    lst = None
-    with conn_source :
-        # 迁移实例 最后一组 binlog event
-        lst = source_binlog(conn_source)
-    print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    with conn_dest :
-        # 目标实例binlog event对比迁移实例最后一组 event，找到对应的file 和 pos
-        f,p = dest_binlog(conn_dest,f,p,lst)
-
-    with conn_source :
-        # change master
-       source_change(conn_source,mysql_dest["host"],mysql_dest["port"],replica["user"],replica["pwd"],f,p) 
+    while True:
+        f = None
+        p = None
+        e = None
+        with conn_dest :
+            # 预取 目标实例 binlog file 和 pos
+            dest_result = dest_master_status(conn_dest)
+            f = dest_result["File"]
+            p = dest_result["Position"]
+    
+        lst = None
+        with conn_source :
+            # 迁移实例 最后一组 binlog event
+            lst = source_binlog(conn_source)
+        print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        with conn_dest :
+            # 目标实例binlog event对比迁移实例最后一组 event，找到对应的file 和 pos
+            f,p,e = dest_binlog(conn_dest,f,p,lst)
+        with conn_source :
+            if e:
+                # change master
+                source_change(conn_source,mysql_dest["host"],mysql_dest["port"],replica["user"],replica["pwd"],f,p)
+                break
+            else:
+                source_slave_start(conn_source)
