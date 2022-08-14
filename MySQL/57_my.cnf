@@ -1,15 +1,173 @@
 [client]
-port=3306
-socket=/tmp/mysql.sock
+port = 3306
+socket = /home/work/mysql/tmp/mysql.sock
 
 [mysqld]
-port=3306
-socket=/tmp/mysql.sock
+user								= work
+port = 3306
+socket = /home/work/mysql/tmp/mysql.sock
+datadir = /home/work/mysql/data
+basedir = /home/work/mysql
+pid_file = /home/work/mysql/tmp/mysql.pid
+log-error = /home/work/mysql/log/mysql.err
+default-time-zone                                               = "+08:00"
+thread_handling                                                 = pool-of-threads
+thread_pool_stall_limit                                         = 50
+thread_pool_oversubscribe                                       = 20
+performance_schema                                              = 1
+log_slave_updates
+log_timestamps                                                  = SYSTEM
+general_log                                                     = 0
+general_log_file = /home/work/mysql/log/mysql.log
+log_warnings
+slow_query_log
+slow_query_log_file = /home/work/mysql/log/slow.log
+long_query_time                                                 = 0.5
+lock_wait_timeout						= 120
+show_compatibility_56                                           = on
+sql_mode      							= 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+#lower_case_table_names = 1
 
-back_log  = 1024      # system limit or 50 + (max_connections / 5)
+tmpdir = /home/work/mysql/tmp
+table_open_cache_instances                                      = 16                                                               
+optimizer_switch='index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,engine_condition_pushdown=on,index_condition_pushdown=on,mrr=on,mrr_cost_based=on,block_nested_loop=on,batched_key_access=off,materialization=on,semijoin=on,loosescan=on,firstmatch=on,subquery_materialization_cost_based=on,use_index_extensions=on'
+super_read_only                                                 = off                    
+log_slow_slave_statements                                       = on
+log_slow_admin_statements                                       = on
+log_slow_verbosity                                              = 'full'
+slow_query_log_use_global_control                               = "long_query_time"    
+event-scheduler                                                 = off   
+back_log                                                        = 1000   
+skip_name_resolve
+max_connections                                                 = 10240
+max_user_connections                                            = 4000
+max_connect_errors                                              = 1000            
+extra_max_connections                                           = 3
+extra_port = 13306
+table_open_cache                                                = 8192                                                
+table_definition_cache                                          = 65535
+max_allowed_packet                                              = 64M                                                          
+expire_logs_days                                                = 7
+max_heap_table_size                                             = 1024M           
+read_rnd_buffer_size                                            = 512K                                                  
+group_concat_max_len                                            = 1024000
+sort_buffer_size                                                = 256K                  
+read_buffer_size                                                = 64K
+join_buffer_size                                                = 128K                 
+thread_cache_size                                               = 256                                          
+ft_min_word_len                                                 = 4                                 
+default-storage-engine                                          = INNODB
+thread_stack                                                    = 192K                               
+transaction_isolation                                           = REPEATABLE-READ
+tmp_table_size                                                  = 1024M                             
+open_files_limit                                                = 65536                                                   
+key_buffer_size                                                 = 32M                  
+bulk_insert_buffer_size                                         = 64M            
+myisam_sort_buffer_size                                         = 128M           
+myisam_max_sort_file_size                                       = 1G           
+myisam_repair_threads                                           = 1                
+max_allowed_packet                                              = 64M
+max_prepared_stmt_count                                         = 1000000
+
+#replication
+server-id = 171582153
+binlog_rows_query_log_events                                    = on          
+log-bin = /home/work/mysql/log/mysql-bin
+relay-log                                                       = relay-bin
+binlog_format = ROW
+binlog_checksum                                                 = none                     
+binlog_cache_size                                               = 16M            
+max_binlog_cache_size                                           = 2G
+sync_binlog = 1000
+master_info_repository                                          = TABLE
+relay_log_info_repository                                       = TABLE
+relay_log_recovery                                              = on
+sync_master_info                                                = 10000
+sync_relay_log_info                                             = 10000
+sync_relay_log                                                  = 0
+slave_net_timeout = 60
+slave-parallel-type = DATABASE
+slave-parallel-workers = 0
+slave_pending_jobs_size_max                                     = 134217728
+slave_preserve_commit_order                                     = 0
+transaction_write_set_extraction                                = XXHASH64
+binlog_transaction_dependency_tracking                          = WRITESET
+gtid_mode = off
+enforce-gtid-consistency = off
+#plugin_dir                                                      = /home/work/mysql/lib/mysql/plugin
+#plugin_load 							 = "rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so"
+#rpl_semi_sync_master_enabled                                    = on
+#rpl_semi_sync_slave_enabled                                     = on
+#rpl_semi_sync_master_wait_for_slave_count                        = 1
+#rpl_semi_sync_master_timeout                                    = 1000
+#rpl_semi_sync_master_wait_point                                 = after_sync
 
 
-max_allowed_packet=128M
 
-[mysqldump]
-quick
+#undo
+#innodb_max_undo_log_size                                        = 1024M     
+#innodb_undo_log_truncate                                        = on                     
+#innodb_undo_logs                                                = 128
+#innodb_undo_tablespaces                                         = 3
+#innodb_purge_rseg_truncate_frequency                            = 128
+
+#innodb
+innodb_autoextend_increment                                     = 64
+innodb_concurrency_tickets                                      = 5000
+innodb_old_blocks_time                                          = 1000
+innodb_purge_batch_size                                         = 300
+innodb_stats_on_metadata                                        = off
+innodb_thread_sleep_delay                                       = 10000                   
+innodb_adaptive_max_sleep_delay                                 = 15000              
+innodb_buffer_pool_dump_at_shutdown                             = on
+innodb_buffer_pool_load_at_startup                              = on
+innodb_flush_neighbors                                          = 1
+innodb_write_io_threads                                         = 8           
+innodb_read_io_threads                                          = 16
+innodb_print_all_deadlocks                                      = on
+innodb_buffer_pool_size = 8G
+innodb_buffer_pool_instances                                    = 8                     
+innodb_data_file_path                                           = ibdata1:100M:autoextend      
+innodb_thread_concurrency                                       = 48                       
+innodb_flush_log_at_trx_commit = 2
+innodb_log_buffer_size                                          = 64M
+innodb_log_file_size                                            = 4096M                                                                             
+innodb_log_files_in_group                                       = 3                       
+innodb_max_dirty_pages_pct                                      = 75     
+innodb_max_dirty_pages_pct_lwm                                  = 10                                                                        
+innodb_flush_method                                             = O_DIRECT                           
+innodb_lock_wait_timeout                                        = 10                        
+innodb_file_per_table                                           = 1
+innodb_purge_threads                                            = 4                            
+innodb_io_capacity                                              = 5000
+innodb_open_files                                               = 65535                                                                               
+innodb_online_alter_log_max_size                                = 5120M
+innodb_sort_buffer_size                                         = 4M
+innodb_adaptive_hash_index_parts                                = 8           
+innodb_buffer_pool_chunk_size                                   = 128          
+innodb_buffer_pool_dump_pct                                     = 80             
+innodb_deadlock_detect                                          = on                      
+innodb_default_row_format                                       = DYNAMIC                      
+innodb_fill_factor                                              = 100                          
+innodb_flush_sync                                               = off                      
+innodb_log_checksums                                            = on                        
+innodb_log_write_ahead_size                                     = 8192                  
+innodb_max_undo_log_size                                        = 1073741824                       
+innodb_page_cleaners                                            = 4                              
+innodb_purge_rseg_truncate_frequency                            = 128              
+innodb_temp_data_file_path                                      = ibtmp1:12M:autoextend                        
+innodb_print_lock_wait_timeout_info                             = on
+
+
+[myisamchk]
+key_buffer_size                                                 = 512M
+sort_buffer_size                                                = 512M
+read_buffer                                                     = 8M
+write_buffer                                                    = 8M
+
+[mysqld_safe]
+numa_interleave                                                 = 1
+
+[mysql]
+no-auto-rehash
+prompt                                                          = "\\u@\\h (\\d)> "
