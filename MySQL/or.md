@@ -1,6 +1,6 @@
 
-### in
+### 相同列 in
 
-### union all
+### 不同列 union all
 
 ### 
