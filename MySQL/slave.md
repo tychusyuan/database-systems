@@ -12,7 +12,7 @@ stop slave;SET GLOBAL sql_slave_skip_counter=1;start slave;select SLEEP(1);show 
 ```sql
 select * from performance_schema.replication_applier_status_by_worker;
 ```
-### 跳过
+### 利用一个空事务，跳过某个gtid事务
 ```sql
  STOP SLAVE;SET GTID_NEXT='aaa-bbb-ccc-ddd:N';BEGIN;COMMIT;SET GTID_NEXT='AUTOMATIC';START SLAVE;
 ```
