@@ -81,4 +81,5 @@ select @value;
 ```
 ### 解决方案 4 全局唯一id生成器，snowflake 或者 美团 leaf 
 https://tech.meituan.com/2017/04/21/mt-leaf.html
+
 https://github.com/Meituan-Dianping/Leaf
