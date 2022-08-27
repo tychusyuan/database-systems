@@ -51,7 +51,11 @@ begin;delete from userSceneIdGenerator where stub=0;insert userSceneIdGenerator 
 ```
 ### 解决方案 2 使用LAST_INSERT_ID来实现AUTO_INCREMENT 自增
 ```sql
-CREATE TABLE sequence(tablename VARCHAR(64) NOT NULL,id BIGINT UNSIGNED NOT NULL DEFAULT 1,PRIMARY KEY (tablename)) ENGINE=INNODB;
+CREATE TABLE sequence(
+tablename VARCHAR(64) NOT NULL,
+id BIGINT UNSIGNED NOT NULL DEFAULT 1,
+PRIMARY KEY (tablename)
+) ENGINE=INNODB;
 ```
 ```sql
 BEGIN
