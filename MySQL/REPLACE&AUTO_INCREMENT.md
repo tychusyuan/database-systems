@@ -49,7 +49,7 @@ REPLACE INTO userScene.userSceneIdGenerator (stub) values(0)
 ```sql
 begin;delete from userSceneIdGenerator where stub=0;insert userSceneIdGenerator (stub) values (0);commit;
 ```
-### 解决方案 2 使用LAST_INSERT_ID触发AUTO_INCREMENT 自增
+### 解决方案 2 使用LAST_INSERT_ID来实现AUTO_INCREMENT 自增
 ```sql
 CREATE TABLE sequence(tablename VARCHAR(64) NOT NULL,id BIGINT UNSIGNED NOT NULL DEFAULT 1,PRIMARY KEY (tablename)) ENGINE=INNODB;
 ```
@@ -59,7 +59,7 @@ INSERT INTO sequence (tablename) VALUES (tname) ON DUPLICATE KEY UPDATE id=LAST_
 SELECT LAST_INSERT_ID();
 END
 ```
-### 解决方案 3 update 是 set 变量，再select 变量
+### 解决方案 3 update 是 set 变量，再select 变量，来模拟自增
 ```sql
 CREATE TABLE `testupdate` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
