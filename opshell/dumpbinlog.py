@@ -9,10 +9,10 @@ from pymysqlreplication.row_event import DeleteRowsEvent, UpdateRowsEvent, Write
 import hashlib
 
 MYSQL_SETTINGS = {
-    "host": "fr1-miui-appmarket-db02.awsde",
-    "port": 3308,
-    "user": "autopilot",
-    "passwd": "YTkzNDJjZDRhNWMyNzJkOTZiMTllMTI4"
+    "host": "127.0.0.1
+    "port": 3306
+    "user": "",
+    "passwd": ""
 }
 
 def _binlog_loader(self):
