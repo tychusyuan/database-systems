@@ -47,7 +47,7 @@ echo max-load=Thread_running=3 | socat - /tmp/gh-ost.t1.sock
 -verbose \
 -execute 2>&1 | tee gh-ost.log
 ```
-### 
+### 监控主从状态
 ```shell
 ./gh-ost \
 -allow-on-master \
