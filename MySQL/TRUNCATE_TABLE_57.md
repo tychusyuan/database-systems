@@ -16,6 +16,5 @@ RENAME TABLE dev_tab TO dev_tab_old;
 RENAME TABLE dev_tab_new TO dev_tab; 
 COMMIT;
 
-DROP TABLE dev_tab_old;
-
+DROP TABLE IF EXISTS dev_tab_old;
 ```
