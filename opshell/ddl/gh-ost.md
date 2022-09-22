@@ -8,13 +8,13 @@ echo no-throttle | socat - ./gh-ost.sock
 ```
 ### 修改参数
 ```shell
-echo chunk-size=100 | socat - ./gh-ost.sock
+echo chunk-size=100 | nc -U ./gh-ost.sock
 ```
 ```shell
-echo max-lag-millis=200 | socat - ./gh-ost.sock
+echo max-lag-millis=200 | nc -U ./gh-ost.sock
 ```
 ```shell
-echo max-load=Thread_running=3 | socat - ./gh-ost.sock
+echo max-load=Thread_running=3 | nc -U ./gh-ost.sock
 ```
 
 ### State: postponing cut-over 状态之后，删除cut.over.flag，则开始cut-over
