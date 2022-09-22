@@ -5,6 +5,16 @@
 
 ## 应对方案
 ### 1、应对内存清理 data page 的方案是 先rename，再drop
+```sql
+START TRANSACTION;
+CREATE TABLE dev_tab_new LIKE dev_tab; 
+RENAME TABLE dev_tab TO dev_tab_old; 
+RENAME TABLE dev_tab_new TO dev_tab; 
+COMMIT;
+
+DROP TABLE IF EXISTS dev_tab_old;
+```
+
 ### 2、应对删除大文件 则使用 硬链接
 ```shell
 sudo ln test.idb test.idb.hdlk
