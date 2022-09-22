@@ -1,4 +1,24 @@
-### 
+### 暂停
+```shell
+echo throttle | socat - ./gh-ost.sock
+```
+### 恢复
+```shell
+echo no-throttle | socat - ./gh-ost.sock
+```
+### 修改参数
+```shell
+echo chunk-size=100 | socat - /tmp/gh-ost.t1.sock
+```
+```shell
+echo max-lag-millis=200 | socat - /tmp/gh-ost.t1.sock
+```
+```shell
+echo max-load=Thread_running=3 | socat - /tmp/gh-ost.t1.sock
+```
+
+### State: postponing cut-over 状态之后，删除cut.over.flag，则开始cut-over
+### 创建throttle.flag 开始 pauses
 ```shell
 ./gh-ost \
 -allow-on-master \
