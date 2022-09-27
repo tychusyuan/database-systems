@@ -26,7 +26,7 @@ echo max-load=Thread_running=3 | nc -U ./gh-ost.sock
 -chunk-size 500 \
 -exact-rowcount \
 -max-load Threads_running=20 \
--critical-load Threads_connected=64,Connections=10240 \
+-critical-load Threads_running=64 \
 -critical-load-interval-millis 600 \
 -cut-over atomic \
 -cut-over-lock-timeout-seconds 3 \
@@ -37,15 +37,16 @@ echo max-load=Thread_running=3 | nc -U ./gh-ost.sock
 -throttle-flag-file ./throttle.flag \
 -postpone-cut-over-flag-file ./cut.over.flag \
 -panic-flag-file ./ghost.panic.flag \
--host \
--port \
--user \
--password \
--database \
--table \
+-host localhost \
+-port 3306 \
+-user root \
+-password 123456 \
+-database db \
+-table table \
 -alter "" \
 -verbose \
 -execute 2>&1 | tee gh-ost.log
+
 ```
 ### 监控主从状态
 ```shell
