@@ -49,3 +49,11 @@ work     24645 103010544 60765528
 ```shell
 ifconfig | grep 'inet addr' | cut -d ':' -f 2 | awk '{ print $1 }' | grep -E '^(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.)'
 ```
+
+###gzip 压缩解压保留原文件
+```shell
+gzip -c aa > aa.gz
+```
+```shell
+gzip -dc bb.gz > bb
+```
