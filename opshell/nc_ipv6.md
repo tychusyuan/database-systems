@@ -3,6 +3,10 @@
 ```shell
 apt install netcat-openbsd
 ```
+## zstd
+```shell
+apt install zstd
+```
 ## tcp传递文件
 ### recv
 ```shell
