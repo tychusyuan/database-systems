@@ -52,3 +52,7 @@ nc -6l 8080 | zstd -d |tar -xf -
 ```shell
 tar -cf - test | zstd -1 -T8 - | nc -q 1 -6nv 0:0:0:0:0:0:0:1 8080
 ```
+### send 所有文件
+```shell
+tar -cf - ./* | zstd -1 -T8 - | nc -q 1 -6nv 0:0:0:0:0:0:0:1 8080
+```
