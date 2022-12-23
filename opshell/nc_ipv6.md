@@ -39,7 +39,7 @@ tar -cf - test | nc -q 1 -6nv 0:0:0:0:0:0:0:1 8080
 ```shell
 nc -6l 8080 | zstd -d > test.log
 ```
-### send , 压缩级别 1 ，压缩线程 8
+### send , 压缩级别 1 (1-19, default:3)，压缩线程 8
 ```shell
 cat test.log | zstd -1 -T8 - | nc -q 1 -6nv 0:0:0:0:0:0:0:1 8080
 ```
