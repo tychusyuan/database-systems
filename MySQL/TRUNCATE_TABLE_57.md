@@ -10,11 +10,10 @@ TRUNCATE TABLE tbl_name;
 
 ## 5.7版本 流程
 ```sql
-START TRANSACTION;
+
 CREATE TABLE dev_tab_new LIKE dev_tab; 
 RENAME TABLE dev_tab TO dev_tab_old; 
 RENAME TABLE dev_tab_new TO dev_tab; 
-COMMIT;
 
 DROP TABLE IF EXISTS dev_tab_old;
 ```
